@@ -15,6 +15,18 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>Maven</id>
+      <url>https://pkgs.dev.azure.com/AdamMerhi/45847c07-ead5-4450-83ed-29a393bd49f5/_packaging/Maven/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </distributionManagement>
   <build>
     <finalName>devops-assignment</finalName>
   </build>
