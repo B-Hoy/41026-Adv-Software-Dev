@@ -21,4 +21,16 @@ steps:
 - task: Maven@4
   inputs:
     mavenPOMFile: 'pom.xml'
-    goals: 'deploy'
+    goals: 'package'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
