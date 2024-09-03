@@ -15,15 +15,3 @@ steps:
     mavenPOMFile: 'pom.xml'
     options: '-s $(secret_token_file.secureFilePath)'
     goals: 'deploy'
-
-#- task: CopyFiles@2
-#  inputs:
-#    Contents: './target/devops-assignment.war'
-#    TargetFolder: '$(build.artifactstagingdirectory)'
-
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#    ArtifactName: 'drop'
-#    publishLocation: 'Container'
-
