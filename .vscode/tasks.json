@@ -4,9 +4,9 @@
         {
             "label": "Make jar",
             "type": "shell",
-            "command": "jar -cvf ASD.jar src/main/webapp/*",
+            "command": "jar -cvf ASD.war src/main/webapp/*",
 			"windows": {
-				"command": "jar -cvf ASD.jar src\\main\\webapp\\*"
+				"command": "jar -cvf ASD.war src\\main\\webapp\\*"
 			},
             "group": {
                 "kind": "build",
