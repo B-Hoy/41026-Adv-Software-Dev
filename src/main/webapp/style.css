@@ -8,3 +8,12 @@
 .menu-grid-item {
     background-color: rgb(209, 209, 209);
 }
+table, th, td {
+	border: 1px solid;
+}
+td {
+	text-align: center;
+}
+.admin-table {
+	border-collapse: collapse;
+}
