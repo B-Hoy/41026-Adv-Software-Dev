@@ -2,12 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Make jar",
+            "label": "Maven WAR Compile",
             "type": "shell",
-            "command": "jar -cvf ASD.war src/main/webapp/*",
-			"windows": {
-				"command": "jar -cvf ASD.war src\\main\\webapp\\*"
-			},
+            "command": "mvn package",
             "group": {
                 "kind": "build",
                 "isDefault": true
