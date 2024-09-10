@@ -5,7 +5,7 @@
     <body>
 
         <div class="topnav">
-            <a class="active" href="#home">Home</a>
+            <a href="main.jsp">Home</a>
             <a href="myProfile.jsp">My Profile</a>
             <a href="orderHistory.jsp">Order History</a>
             <a href="logout.jsp" style="float:right;">Logout</a>
