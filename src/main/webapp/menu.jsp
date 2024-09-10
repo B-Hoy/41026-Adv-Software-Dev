@@ -1,5 +1,20 @@
 <%@ page import="java.util.List"%>
-<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="uts.advsoft.Pizza"%>
+
+<%
+    List<Pizza> menuItems = new ArrayList<Pizza>();
+    menuItems.add(new Pizza(1, "Meatlovers", "meatlovers.jpg"));
+    menuItems.add(new Pizza(2, "Pepperoni", "meatlovers.jpg"));
+    menuItems.add(new Pizza(3, "Ham and Cheese", "meatlovers.jpg"));
+    menuItems.add(new Pizza(4, "Cheese", "meatlovers.jpg"));
+    menuItems.add(new Pizza(5, "Garlic Cheese", "meatlovers.jpg"));
+    menuItems.add(new Pizza(6, "Vegeterian", "meatlovers.jpg"));
+    menuItems.add(new Pizza(7, "Hawaiian", "meatlovers.jpg"));
+    menuItems.add(new Pizza(8, "Garlic Prawn", "meatlovers.jpg"));
+    menuItems.add(new Pizza(9, "Supreme", "meatlovers.jpg"));
+    menuItems.add(new Pizza(10, "Chicken and Bacon", "meatlovers.jpg"));
+%>
 
 <!DOCTYPE html>
 <html>
@@ -10,13 +25,17 @@
         <title>Menu</title>
     </head>
     <body>
+        <div class="menu">
+        <h1>Menu</h1>
         <div class="menu-grid-container">
         <%
             try {   
-                List<String> menuItems = Arrays.asList("Meatlovers Pizza", "Cheese Pizza", "Pepperoni Pizza");
-                for (String s : menuItems) {
+                for (Pizza p : menuItems) {
         %>
-            <div class="menu-grid-item"><%out.println(s);%></div>
+            <div class="menu-grid-item">
+                <img src=<%out.println(p.getImg());%> alt="Pizza">
+                <div class="menu-grid-item-name"><%out.println(p.getName());%></div>
+            </div>
         <%  
                 }
             }
@@ -25,12 +44,6 @@
             }
         %>
         </div>   
-
-        <form>
-            <!-- Buttons: Page Navigation -->
-            <div style="margin-top: 20px;">
-                <a href="checkout.jsp" class="button">Go to checkout</a>
-            </div>
-        </form>
+    </div>
     </body>
 </html>

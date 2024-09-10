@@ -1,13 +1,51 @@
+.menu {
+    background-color: #ffffff;
+    margin: 60px;
+    padding: 10px 30px;
+}
+
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #7f9bbb;
+    padding-bottom: 10px;
+}
+
 .menu-grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
     gap: 2%;
-    border: 5%;
 }
 
 .menu-grid-item {
-    background-color: rgb(209, 209, 209);
+    background-color: rgb(53, 53, 53);
+    border-radius: 5px;
+    text-align: center;
 }
+
+.menu-grid-item:hover {
+    transform: scale(1.05);
+}
+
+.menu-grid-item img {
+    max-width: 95%;
+    max-height: 95%;
+    display: block;
+    margin: auto;
+    padding-top: 6px;
+  }
+
+  .menu-grid-item-name {
+    padding: 8px;
+    color: #ffffff;
+  }
+
 table, th, td {
 	border: 1px solid;
 }

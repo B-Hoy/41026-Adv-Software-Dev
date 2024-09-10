@@ -17,7 +17,7 @@
             function updateDeliveryFee() {
                 const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
                 let deliveryFee = 0;
-                const subtotal = 10.00;  // Can be adjusted (Dummy Data)
+                const subtotal = 0.00;  // Can be adjusted (Dummy Data)
                 if (deliveryOption === 'delivery') {
                     deliveryFee = 3.95;
                 } else {
@@ -65,17 +65,17 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
+                        <td>Item 1</td>
                         <td><input type="number" name="quantity1" value="1" required></td>
                         <td>$0.00</td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>Item 2</td>
                         <td><input type="number" name="quantity2" value="1" required></td>
                         <td>$0.00</td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>Item 3</td>
                         <td><input type="number" name="quantity3" value="1" required></td>
                         <td>$0.00</td>
                     </tr>
@@ -142,7 +142,7 @@
             <table>
                 <tr>
                     <td>Subtotal</td>
-                    <td>$10.00</td> <!-- Can be adjusted -->
+                    <td>$0.00</td> <!-- Can be adjusted -->
                 </tr>
                 <tr>
                     <td>Delivery Fee</td>
@@ -150,7 +150,7 @@
                 </tr>
                 <tr>
                     <td>Total Price</td>
-                    <td id="totalPrice">$10.00</td> <!-- Will update based on delivery option -->
+                    <td id="totalPrice">$0.00</td> <!-- Will update based on delivery option -->
                 </tr>
             </table>
 
