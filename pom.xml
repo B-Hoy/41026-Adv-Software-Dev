@@ -4,7 +4,7 @@
   <groupId>com.41026.adv-soft.dev</groupId>
   <artifactId>devops-assignment</artifactId>
   <packaging>war</packaging>
-  <version>Release-0.1</version>
+  <version>Release-0.2</version>
   <name>devops-assignment Maven JSP Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
