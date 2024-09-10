@@ -25,5 +25,12 @@
             }
         %>
         </div>   
+
+        <form>
+            <!-- Buttons: Page Navigation -->
+            <div style="margin-top: 20px;">
+                <a href="checkout.jsp" class="button">Go to checkout</a>
+            </div>
+        </form>
     </body>
 </html>

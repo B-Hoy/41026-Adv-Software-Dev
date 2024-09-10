@@ -12,5 +12,12 @@
         </div>
     
         <p>This is the main page</p>
+
+        <form>
+            <!-- Buttons: Page Navigation -->
+            <div style="margin-top: 20px;">
+                <a href="menu.jsp" class="button">View menu</a>
+            </div>
+        </form>
     </body>
 </html>

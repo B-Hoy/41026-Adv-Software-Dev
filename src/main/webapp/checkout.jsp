@@ -156,7 +156,7 @@
 
             <!-- Buttons: Page Navigation -->
             <div style="margin-top: 20px;">
-                <a href="index.jsp" class="button">Homepage</a>
+                <a href="landing.jsp" class="button">Homepage</a>
                 <a href="menu.jsp" class="button">Continue Ordering</a>
                 <button type="submit" class="button">Submit Order</button>
             </div>
