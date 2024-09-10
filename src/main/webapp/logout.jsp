@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Thank you for visiting IoT Bay Store</h1>
+        <h1>Thank you for visiting Food Ordering APp</h1>
         <p>You have been successfully logged out</p>
         <a href="landing.jsp">Return to the homepage</a>
     </div>
