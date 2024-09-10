@@ -44,6 +44,8 @@
             }
         %>
         </div>   
+    <div style="margin-top: 20px;">
+        <a href="checkout.jsp" class="button">Go to Checkout</a>
     </div>
     </body>
 </html>
