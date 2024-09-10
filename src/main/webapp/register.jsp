@@ -5,7 +5,7 @@
             <h1>Register</h1>
     
     
-            <form action="/ASD/src/main/webapp/main.jsp" method="POST">          
+            <form action="/devops-assignment/main.jsp" method="POST">          
                 <input type="hidden" id="form_type" name="form_type" value="insert">
     
                 <div class="account-info">
