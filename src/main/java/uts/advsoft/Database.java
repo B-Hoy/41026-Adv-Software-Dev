@@ -57,6 +57,7 @@ public class Database{
 		return a.toArray(new Order[]{});
 	}
 	public boolean is_admin_password(String s){
-		return true;
+		System.out.println("admin " + s);
+		return s.equals("admin");
 	}
 }
