@@ -9,6 +9,6 @@
     <body>
         <h1>Your order has been received!</h1>
         
-        <a href="index.jsp" class="button">Order Again</a>
+        <a href="landing.jsp" class="button">Order Again</a>
     </body>
 </html>
