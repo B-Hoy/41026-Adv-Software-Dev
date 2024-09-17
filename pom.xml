@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.41026.adv-soft.dev</groupId>
   <artifactId>devops-assignment</artifactId>
-  <version>0.0.0-dev.30.uncommitted+30e83c22</version>
+  <version>0.0.0-dev.43.uncommitted+70a36a7d</version>
   <packaging>war</packaging>
   <name>devops-assignment Maven JSP Webapp</name>
   <url>http://maven.apache.org</url>
@@ -20,11 +20,15 @@
       <url>https://pkgs.dev.azure.com/AdamMerhi/45847c07-ead5-4450-83ed-29a393bd49f5/_packaging/Maven/maven/v1</url>
     </repository>
   </distributionManagement>
+  <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.11.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -52,8 +56,4 @@
       </plugin>
     </plugins>
   </build>
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
 </project>
