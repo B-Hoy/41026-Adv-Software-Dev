@@ -41,10 +41,10 @@ h1 {
     padding-top: 6px;
   }
 
-  .menu-grid-item-name {
-    padding: 8px;
-    color: #ffffff;
-  }
+.menu-grid-item-name {
+  padding: 8px;
+  color: #ffffff;
+}
 
 table, th, td {
 	border: 1px solid;

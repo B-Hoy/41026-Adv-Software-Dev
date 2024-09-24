@@ -1,19 +1,11 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="uts.advsoft.Pizza"%>
+<%@ page import="uts.advsoft.MenuItem"%>
+<%@ page import="uts.advsoft.Database"%>
 
 <%
-    List<Pizza> menuItems = new ArrayList<Pizza>();
-    menuItems.add(new Pizza(1, "Meatlovers", "meatlovers.jpg"));
-    menuItems.add(new Pizza(2, "Pepperoni", "meatlovers.jpg"));
-    menuItems.add(new Pizza(3, "Ham and Cheese", "meatlovers.jpg"));
-    menuItems.add(new Pizza(4, "Cheese", "meatlovers.jpg"));
-    menuItems.add(new Pizza(5, "Garlic Cheese", "meatlovers.jpg"));
-    menuItems.add(new Pizza(6, "Vegeterian", "meatlovers.jpg"));
-    menuItems.add(new Pizza(7, "Hawaiian", "meatlovers.jpg"));
-    menuItems.add(new Pizza(8, "Garlic Prawn", "meatlovers.jpg"));
-    menuItems.add(new Pizza(9, "Supreme", "meatlovers.jpg"));
-    menuItems.add(new Pizza(10, "Chicken and Bacon", "meatlovers.jpg"));
+    Database db = (Database)application.getAttribute("database");
+    MenuItem[] menuItems = db.getMenuItems();
 %>
 
 <!DOCTYPE html>
@@ -30,11 +22,13 @@
         <div class="menu-grid-container">
         <%
             try {   
-                for (Pizza p : menuItems) {
+                for (MenuItem i : menuItems) {
         %>
             <div class="menu-grid-item">
-                <img src=<%out.println(p.getImg());%> alt="Pizza">
-                <div class="menu-grid-item-name"><%out.println(p.getName());%></div>
+                <%String imgLocation = "menuImages/" + i.getImg();%>
+                <img src=<%out.println(imgLocation);%> alt="Pizza">
+                <div class="menu-grid-item-name"><%out.println(i.getName());%></div>
+                <div class="menu-grid-item-name"><%out.println("$" + i.getPrice());%></div>
             </div>
         <%  
                 }
