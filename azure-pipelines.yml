@@ -13,5 +13,8 @@ steps:
 - task: Maven@4
   inputs:
     mavenPOMFile: 'pom.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.17'
+    mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
     options: '-s $(secret_token_file.secureFilePath)'
     goals: 'deploy'

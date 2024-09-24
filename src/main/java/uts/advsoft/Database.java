@@ -83,7 +83,6 @@ public class Database{
 	}
 
 	public boolean is_admin_password(String s){
-		System.out.println("admin " + s);
 		return s.equals("admin");
 	}
 
