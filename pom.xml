@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.41026.adv-soft.dev</groupId>
   <artifactId>devops-assignment</artifactId>
-  <version>0.0.0-dev.44.uncommitted+f92cb530</version>
+  <version>${revision}${sha1}${changelist}</version>
   <packaging>war</packaging>
   <name>devops-assignment Maven JSP Webapp</name>
   <url>http://maven.apache.org</url>
@@ -47,15 +47,6 @@
   <build>
     <finalName>devops-assignment</finalName>
     <plugins>
-      <plugin>
-        <groupId>me.ccampo</groupId>
-        <artifactId>git-version-maven-plugin</artifactId>
-        <version>0.1.0</version>
-        <extensions>true</extensions>
-        <configuration>
-          <strategy hint="git"></strategy>
-        </configuration>
-      </plugin>
 	  <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>

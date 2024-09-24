@@ -4,16 +4,7 @@
         {
             "label": "Maven WAR Compile",
             "type": "shell",
-            "command": "mvn package"
-        },
-		{
-			"label": "Update pom.xml version",
-			"dependsOn": ["Maven WAR Compile"],
-			"type": "shell",
-			"command": "mv pom.xml.new-version pom.xml",
-			"windows": {
-				"command": "move /y pom.xml.new-version pom.xml"
-			},
+            "command": "mvn package",
             "group": {
                 "kind": "build",
                 "isDefault": true
