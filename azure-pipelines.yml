@@ -15,5 +15,6 @@ steps:
     mavenPOMFile: 'pom.xml'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.17'
+    mavenOptions: '-Xmx1024m -Dsha1=$(git rev-parse HEAD)'
     options: '-s $(secret_token_file.secureFilePath)'
     goals: 'deploy'
