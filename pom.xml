@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.41026.adv-soft.dev</groupId>
   <artifactId>devops-assignment</artifactId>
-  <version>0.0.0-dev.45.uncommitted+26a28e88</version>
+  <version>${revision}</version>
   <packaging>war</packaging>
   <name>devops-assignment Maven JSP Webapp</name>
   <url>http://maven.apache.org</url>
@@ -21,8 +21,10 @@
     </repository>
   </distributionManagement>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>

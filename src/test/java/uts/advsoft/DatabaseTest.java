@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import uts.advsoft.Database;
 import uts.advsoft.User;
 import uts.advsoft.Order;
+import uts.advsoft.MenuItemEntry;
 
 class DatabaseTest{
 
@@ -37,7 +38,9 @@ class DatabaseTest{
 		assertTrue(orders.length > 0);
 		assertEquals(orders[0].get_id(), 1);
 		assertEquals(orders[0].get_owner_id(), 1);
-		assertEquals(orders[0].get_menu_items(), "Example Item 1:10, Example Item 2:20, Example Item 3:100");
+		//assertEquals(orders[0].get_menu_items(), );
+		MenuItemEntry[] mie = orders[0].get_menu_items();
+		assertTrue(mie.length == 3);
 		assertEquals(orders[0].get_delivery_method(), "Walk");
 		assertTrue(orders[0].is_current_order());
 		assertEquals(orders[0].get_status_level(), "Cooking");

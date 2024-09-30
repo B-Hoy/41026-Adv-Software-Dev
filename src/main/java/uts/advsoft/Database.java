@@ -5,10 +5,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Database{
-	Connection db_con;
+	static Connection db_con;
 	public Database(){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -21,7 +22,7 @@ public class Database{
 			s.executeUpdate("INSERT INTO Users VALUES(1, 'testing@test.com', 'test', 'user', 'testpasswd', '+61400000000', DATETIME('now', '+10 hours'), 1234567890987654, '09/24', 123, 'PO Box 1', 'Test Street', 'Sydney', 2000)");
 
 			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
-			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, 'Example Item 1:10, Example Item 2:20, Example Item 3:100', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 99.98)");
+			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, '1:10,2:20,3:100', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 99.98)");
 
 			s.executeUpdate("CREATE TABLE MenuItems(id INTEGER NOT NULL PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL, image TEXT NOT NULL)");
 			s.executeUpdate("INSERT INTO MENUITEMS VALUES" + //
@@ -45,7 +46,8 @@ public class Database{
 								"(18, 'Cheesy Garlic', 8.99, 'cheesygarlic.jpg')," + //
 								"(19, 'Calzone', 10.99, 'calzone.jpg')," + //
 								"(20, 'Pizza Fries', 7.99, 'pizzafries.jpg')");
-
+			
+			s.executeUpdate("CREATE TABLE Carts(it INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, menu_items TEXT NOT NULL, price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
 			s.close();
 		} catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
@@ -81,11 +83,9 @@ public class Database{
 		}
 		return a.toArray(new Order[]{});
 	}
-
 	public boolean is_admin_password(String s){
 		return s.equals("admin");
 	}
-
 	public MenuItem[] getMenuItems(){	
 		ArrayList<MenuItem> menu = new ArrayList<MenuItem>();
 		try{
@@ -99,5 +99,33 @@ public class Database{
 			System.out.println("ERROR: " + e.getMessage());
 		}
 		return menu.toArray(new MenuItem[]{});
+	}
+	public static MenuItem get_menu_item(int id){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM MenuItems WHERE id = (?)");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new MenuItem(id, rs.getString("name"), rs.getDouble("price"), rs.getString("image"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		// Only get here if the ID isn't found
+		return null;
+	}
+	public static MenuItem get_menu_item(String name){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM MenuItems WHERE name LIKE (?) LIMIT 1");
+			ps.setString(1, "%" + name + "%");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new MenuItem(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getString("image"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		// Only get here if the name isn't found
+		return null;
 	}
 }
