@@ -55,3 +55,12 @@ td {
 .admin-table {
 	border-collapse: collapse;
 }
+.searchBar {
+  width: 100%;
+  display: inline-flex;
+  margin-bottom: 10px;
+}
+
+.searchInput{
+  width: 100%
+}

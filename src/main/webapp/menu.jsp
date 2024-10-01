@@ -19,7 +19,12 @@
     <body>
         <div class="menu">
         <h1>Menu</h1>
-        <div class="menu-grid-container">
+
+        <div class="searchBar">
+            <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products..">
+        </div>
+        
+        <div class="menu-grid-container" id="menu">
         <%
             try {   
                 for (MenuItem i : menuItems) {
@@ -41,5 +46,25 @@
     <div style="margin-top: 20px;">
         <a href="checkout.jsp" class="button">Go to Checkout</a>
     </div>
+
+    <script>
+        function searchMenu() {
+            var input, filter, menuItems;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            menuItems = document.querySelectorAll(".menu-grid-item");
+
+            menuItems.forEach(function(menuItem) {
+                var itemName = menuItem.querySelector(".menu-grid-item-name").textContent.toUpperCase();
+
+                if (itemName.indexOf(filter) > -1) {
+                    menuItem.style.display = "";  // Show item
+                } else {
+                    menuItem.style.display = "none";  // Hide item
+                }
+            });
+        }
+    </script>
+    
     </body>
 </html>
