@@ -21,8 +21,8 @@ public class Database{
 			s.executeUpdate("CREATE TABLE Users(id INTEGER NOT NULL PRIMARY KEY, email TEXT NOT NULL, first_name TEXT NOT NULL, last_name TEXT NOT NULL, password TEXT NOT NULL, phone_number TEXT NOT NULL, register_date TEXT NOT NULL, card_num TEXT NOT NULL, card_expiry_date TEXT NOT NULL, card_cvc INTEGER NOT NULL, address_street_num TEXT NOT NULL, address_street TEXT NOT NULL, address_city TEXT NOT NULL, address_postcode INTEGER NOT NULL)");
 			s.executeUpdate("INSERT INTO Users VALUES(1, 'testing@test.com', 'test', 'user', 'testpasswd', '+61400000000', DATETIME('now', '+10 hours'), 1234567890987654, '09/24', 123, 'PO Box 1', 'Test Street', 'Sydney', 2000)");
 
-			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
-			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, '1:10,2:20,3:100', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 99.98)");
+			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
+			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, 0, '1:10,2:20,3:100', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 99.98)");
 
 			s.executeUpdate("CREATE TABLE MenuItems(id INTEGER NOT NULL PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL, image TEXT NOT NULL)");
 			s.executeUpdate("INSERT INTO MENUITEMS VALUES" + //
@@ -47,7 +47,9 @@ public class Database{
 								"(19, 'Calzone', 10.99, 'calzone.jpg')," + //
 								"(20, 'Pizza Fries', 7.99, 'pizzafries.jpg')");
 			
-			s.executeUpdate("CREATE TABLE Carts(it INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, menu_items TEXT NOT NULL, price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
+			s.executeUpdate("CREATE TABLE Carts(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, menu_items TEXT NOT NULL, price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
+			s.executeUpdate("CREATE TABLE Employees(id INTEGER NOT NULL PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, password TEXT NOT NULL, hire_date TEXT NOT NULL, role TEXT NOT NULL)");
+			s.executeUpdate("INSERT INTO Employees VALUES(1, 'Test', 'Employee', 'emppwd', '2020-09-01 18:16:12', 'Driver')");
 			s.close();
 		} catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
@@ -75,7 +77,7 @@ public class Database{
 			Statement s = db_con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT * FROM Orders");
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
 			}
 			s.close();
 		}catch (Exception e){
@@ -127,5 +129,47 @@ public class Database{
 		}
 		// Only get here if the name isn't found
 		return null;
+	}
+	public Employee[] get_all_employees(){
+		ArrayList<Employee> emps = new ArrayList<Employee>();
+		try{
+			Statement s = db_con.createStatement();
+			ResultSet rs = s.executeQuery("SELECT * FROM Employees");
+			while (rs.next()){
+				emps.add(new Employee(rs.getInt("id"), rs.getString("role"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("hire_date").substring(0, 10)));
+			}
+			s.close();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return emps.toArray(new Employee[]{});	
+	}
+	public Employee get_employee(int id){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Employees WHERE id = (?)");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new Employee(rs.getInt("id"), rs.getString("role"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("hire_date").substring(0, 10));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return null;
+	}
+	public void page_update_order(int order_id, String method, int driver, String status){
+		System.out.println(String.valueOf(order_id) + "\n" + method + "\n" + String.valueOf(driver) + "\n" + status);
+		try{
+			PreparedStatement ps = db_con.prepareStatement("UPDATE Orders SET delivery_method = (?), driver_id = (?), status_level = (?), current_order = (?) WHERE id = (?)");
+			ps.setString(1, method);
+			ps.setInt(2, driver);
+			ps.setString(3, status);
+			ps.setBoolean(4, !status.equals("Finished"));
+			ps.setInt(5, order_id);
+			ps.executeUpdate();
+			ps.close();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
 	}
 }

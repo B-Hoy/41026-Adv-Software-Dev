@@ -12,6 +12,9 @@ public class MenuItemEntry{
 	public MenuItem get_item(){
 		return item;
 	}
+	public int get_amount(){
+		return amount;
+	}
 	public void add_amount(int amount){
 		this.amount += amount;
 	}
