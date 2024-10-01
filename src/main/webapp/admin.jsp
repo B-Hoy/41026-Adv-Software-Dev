@@ -4,7 +4,7 @@
 <%@page import="uts.advsoft.MenuItem"%>
 <%@page import="uts.advsoft.MenuItemEntry"%>
 <%@page import="uts.advsoft.Employee"%>
-
+<%@page import="uts.advsoft.Cart"%>
 <%  Database db = (Database)application.getAttribute("database");
 	String form_class = request.getParameter("form");
 	if (form_class != null){
@@ -16,6 +16,22 @@
 			break;
 		case "update_order":
 			db.page_update_order(Integer.valueOf(request.getParameter("order_id")), request.getParameter("dev_method"), Integer.valueOf(request.getParameter("dev_driver")), request.getParameter("order_status"));
+			break;
+		// all these functions are gonna use the cart id '1' instead of the current user id for testing's sake
+		case "add_to_cart":
+			db.add_to_cart(1, Integer.valueOf(request.getParameter("menu_item")), Integer.valueOf(request.getParameter("amount")));
+			break;
+		case "remove_amt_from_cart":
+			db.remove_from_cart(1, Integer.valueOf(request.getParameter("menu_item")), Integer.valueOf(request.getParameter("amount")));
+			break;
+		case "remove_item_from_cart":
+			db.remove_from_cart(1, Integer.valueOf(request.getParameter("menu_item")));
+			break;
+		case "delete_cart":
+			db.delete_cart(1);
+			break;
+		case "cart_to_order":
+			db.make_order(1);
 			break;
 		}
 	}
@@ -39,6 +55,8 @@
 		<% 
 			User[] users = db.get_all_users();
 			Order[] orders = db.get_all_orders();
+			Cart[] carts = db.get_all_carts();
+			MenuItem[] m_items = db.getMenuItems();
 		%>
 		<table class="admin-table">
 			<thead>
@@ -78,6 +96,100 @@
 				<td><%=users[i].get_address_street()%></td>
 				<td><%=users[i].get_address_city()%></td>
 				<td><%=users[i].get_address_postcode()%></td>
+			</tr>
+			<%}%>
+		</table>
+		<br>
+		<table class="admin-table">
+			<thead>
+				<th colspan="99">
+					<b>Carts</b>
+				</th>
+			</thead>
+			<thead>
+				<th>ID</th>
+				<th>Owner ID</th>
+				<th>Menu Items</th>
+				<th>Price</th>
+				<th>Add To Cart</th>
+				<th>Remove From Cart</th>
+				<th>Remove Item From Cart</th>
+				<th>Delete Cart</th>
+				<th>Make Cart Into Order</th>
+			</thead>
+			<% for (int i = 0; i < carts.length; i++){
+				MenuItemEntry[] items = carts[i].get_cart_items();
+			%>
+			<tr>
+				<td><%=carts[i].get_id()%></td>
+				<td><%=carts[i].get_owner_id()%></td>
+				<td><table class="admin-table">
+					<thead>
+						<th>Item Name</th>
+						<th>Amount</th>
+					</thead>
+					<% for (int j = 0; j < items.length; j++){ %>
+					<tr>
+						<td><%=items[j].get_item().getName()%></td>
+						<td><%=items[j].get_amount()%></td>
+					</tr>
+					<%}%>
+				</table></td>
+				<td><%=carts[i].get_price()%></td>
+			<td>
+				<form method="post">
+					<input type="hidden" id="form" name="form" value="add_to_cart">
+					<select name="menu_item" id="menu_item">
+					<% for (MenuItem mi : m_items){ %>
+						<option value="<%=mi.getID()%>"><%=mi.getID() + ": " + mi.getName()%></option>
+					<%}%>
+					</select>
+					<br>
+					<label for="amount">Amount:</label>
+					<input type="text" id="amount" name="amount" value="">
+					<br>
+					<input type="submit" value="Submit">
+				</form>
+			</td>
+			<td>
+				<form method="post">
+					<input type="hidden" id="form" name="form" value="remove_amt_from_cart">
+					<select name="menu_item" id="menu_item">
+					<% for (MenuItemEntry mi : items){ %>
+						<option value="<%=mi.get_item().getID()%>"><%=mi.get_item().getID() + ": " + mi.get_item().getName()%></option>
+					<%}%>
+					</select>
+					<br>
+					<label for="amount">Amount:</label>
+					<input type="text" id="amount" name="amount" value="">
+					<br>
+					<input type="submit" value="Submit">
+				</form>
+			</td>
+			<td>
+				<form method="post">
+					<input type="hidden" id="form" name="form" value="remove_item_from_cart">
+					<select name="menu_item" id="menu_item">
+					<% for (MenuItemEntry mi : items){ %>
+						<option value="<%=mi.get_item().getID()%>"><%=mi.get_item().getID() + ": " + mi.get_item().getName()%></option>
+					<%}%>
+					</select>
+					<br>
+					<input type="submit" value="Submit">
+				</form>
+			</td>
+			<td>
+				<form method="post">
+					<input type="hidden" id="form" name="form" value="delete_cart">
+					<input type="submit" value="Submit">
+				</form>
+			</td>
+			<td>
+				<form method="post">
+					<input type="hidden" id="form" name="form" value="cart_to_order">
+					<input type="submit" value="Submit">
+				</form>
+			</td>
 			</tr>
 			<%}%>
 		</table>
@@ -140,7 +252,7 @@
 					</td>
 					<td>
 						<% if (orders[i].get_status_level().equals("Finished")){ %>
-						<%=cur_driver.toString()%>
+						<%=cur_driver != null ? cur_driver.toString() : ""%>
 						<%}else{%>
 						<select name="dev_driver" id="dev_driver">
 							<option value="<%=cur_driver != null ? cur_driver.get_id() : 0%>"><%=cur_driver != null ? cur_driver.toString() : ""%></option>
