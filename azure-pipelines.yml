@@ -20,8 +20,8 @@ steps:
     goals: 'deploy'
 
 - task: CmdLine@2
-    inputs:
-      script: 'tree $(System.DefaultWorkingDirectory)'
+  inputs:
+    script: 'tree $(System.DefaultWorkingDirectory)'
 
 - task: PublishTestResults@2
   inputs:
