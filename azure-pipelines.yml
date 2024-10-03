@@ -23,6 +23,7 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(Agent.BuildDirectory)'
     failTaskOnFailedTests: true
     failTaskOnFailureToPublishResults: true
     publishRunAttachments: true
