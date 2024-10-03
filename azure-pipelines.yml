@@ -18,12 +18,3 @@ steps:
     mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
     options: '-s $(secret_token_file.secureFilePath)'
     goals: 'deploy'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'TEST-*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)/target/surefire-reports/'
-    failTaskOnFailedTests: true
-    failTaskOnFailureToPublishResults: true
-    publishRunAttachments: true
