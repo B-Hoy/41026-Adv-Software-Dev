@@ -163,4 +163,14 @@ class DatabaseTest{
 		Cart c4 = db.get_cart(1, "id");
 		assertEquals(c4.get_menu_item_entry(1), null);
 	}
+	@Test
+	void test_create_user(){
+		db.make_user("a@a.com", "f", "l", "p", "0000000000", "0000000000000000", "00/00", "000", "0", "s", "c", 0);
+		assertEquals(db.get_all_users().length, 2);
+	}
+	@Test
+	void test_get_user(){
+		User u = db.get_user("testing@test.com", "testpasswd");
+		assertTrue(u != null);
+	}
 }

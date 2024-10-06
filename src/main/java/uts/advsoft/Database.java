@@ -18,7 +18,7 @@ public class Database{
 			db_con = DriverManager.getConnection("jdbc:sqlite:" + db_file.getAbsolutePath());
 			Statement s = db_con.createStatement();
 
-			s.executeUpdate("CREATE TABLE Users(id INTEGER NOT NULL PRIMARY KEY, email TEXT NOT NULL, first_name TEXT NOT NULL, last_name TEXT NOT NULL, password TEXT NOT NULL, phone_number TEXT NOT NULL, register_date TEXT NOT NULL, card_num TEXT NOT NULL, card_expiry_date TEXT NOT NULL, card_cvc INTEGER NOT NULL, address_street_num TEXT NOT NULL, address_street TEXT NOT NULL, address_city TEXT NOT NULL, address_postcode INTEGER NOT NULL)");
+			s.executeUpdate("CREATE TABLE Users(id INTEGER NOT NULL PRIMARY KEY, email TEXT NOT NULL UNIQUE, first_name TEXT NOT NULL, last_name TEXT NOT NULL, password TEXT NOT NULL, phone_number TEXT NOT NULL, register_date TEXT NOT NULL, card_num TEXT NOT NULL, card_expiry_date TEXT NOT NULL, card_cvc INTEGER NOT NULL, address_street_num TEXT NOT NULL, address_street TEXT NOT NULL, address_city TEXT NOT NULL, address_postcode INTEGER NOT NULL)");
 			s.executeUpdate("INSERT INTO Users VALUES(1, 'testing@test.com', 'test', 'user', 'testpasswd', '+61400000000', DATETIME('now', '+10 hours'), 1234567890987654, '09/24', 123, 'PO Box 1', 'Test Street', 'Sydney', 2000)");
 
 			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
@@ -71,7 +71,41 @@ public class Database{
 		}
 		return a.toArray(new User[]{});
 	}
-
+	public User get_user(String email, String password){
+		try {
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Users WHERE email = (?) AND password = (?)");
+			ps.setString(1, email);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new User(rs.getInt("id"), rs.getString("email"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("phone_number"), rs.getString("register_date"), rs.getString("card_num"), rs.getString("card_expiry_date"), rs.getInt("card_cvc"), rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return null; // no such user
+	}
+	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, String cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
+		try {
+			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Users VALUES((?), (?), (?), (?), (?), (?), DATETIME('now', '+10 hours'), (?), (?), (?), (?), (?), (?), (?))");
+			ps.setInt(1, generate_id("Users"));
+			ps.setString(2, email);
+			ps.setString(3, fname);
+			ps.setString(4, lname);
+			ps.setString(5, password);
+			ps.setString(6, pnum);
+			ps.setString(7, cardnum);
+			ps.setString(8, cardexp);
+			ps.setString(9, cardcvc);
+			ps.setString(10, addrnum);
+			ps.setString(11, addst);
+			ps.setString(12, addrcity);
+			ps.setInt(13, addrpcode);
+			ps.executeUpdate();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+	}
 	public Order[] get_all_orders(){
 		ArrayList<Order> a = new ArrayList<Order>();
 		try{
@@ -81,6 +115,21 @@ public class Database{
 				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
 			}
 			s.close();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return a.toArray(new Order[]{});
+	}
+	public Order[] get_all_orders_by_user(int user_id){
+		ArrayList<Order> a = new ArrayList<Order>();
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Orders WHERE owner_id = (?)");
+			ps.setInt(1, user_id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()){
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+			}
+			ps.close();
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
 		}
