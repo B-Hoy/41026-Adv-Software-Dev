@@ -86,6 +86,20 @@ public class Database{
 		}
 		return a.toArray(new Order[]{});
 	}
+	public Order get_order(int id){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Orders WHERE id = (?)");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		// Only get here if the ID isn't found
+		return null;
+	}
 	public boolean is_admin_password(String s){
 		return s.equals("admin");
 	}
@@ -159,7 +173,6 @@ public class Database{
 		return null;
 	}
 	public void page_update_order(int order_id, String method, int driver, String status){
-		System.out.println(String.valueOf(order_id) + "\n" + method + "\n" + String.valueOf(driver) + "\n" + status);
 		try{
 			PreparedStatement ps = db_con.prepareStatement("UPDATE Orders SET delivery_method = (?), driver_id = (?), status_level = (?), current_order = (?) WHERE id = (?)");
 			ps.setString(1, method);
