@@ -72,7 +72,7 @@ public class Database{
 		return a.toArray(new User[]{});
 	}
 	public User get_user(String email, String password){
-		try {
+		try{
 			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Users WHERE email = (?) AND password = (?)");
 			ps.setString(1, email);
 			ps.setString(2, password);
@@ -86,7 +86,7 @@ public class Database{
 		return null; // no such user
 	}
 	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, String cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
-		try {
+		try{
 			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Users VALUES((?), (?), (?), (?), (?), (?), DATETIME('now', '+10 hours'), (?), (?), (?), (?), (?), (?), (?))");
 			ps.setInt(1, generate_id("Users"));
 			ps.setString(2, email);

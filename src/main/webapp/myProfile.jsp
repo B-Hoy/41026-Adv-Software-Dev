@@ -1,3 +1,21 @@
+<%@page import="uts.advsoft.Database"%>
+<%@page import="uts.advsoft.Order"%>
+<%@page import="uts.advsoft.User"%>
+<%@page import="uts.advsoft.MenuItem"%>
+<%@page import="uts.advsoft.MenuItemEntry"%>
+<%@page import="uts.advsoft.Employee"%>
+<%@page import="uts.advsoft.Cart"%>
+<% Database db = (Database)application.getAttribute("database"); %> 
+
+<%
+    User currentUser = (User)session.getAttribute("user");
+    if (currentUser == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
+
 <html>
     <head>
         <title>My Profile</title>
@@ -12,50 +30,21 @@
         </div>
 
         
-        <h1>Read Cookies</h1>
+        <h1>Account Information</h1>
 
-        <%
-            // Initialize variables for first and last names
-            String firstName = "";
-            String lastName = "";
-            String email = "";
-            String cardNum = "";
-            String cardExp = "";
-            String phone = "";
 
-            // Retrieve the cookies from the request
-            Cookie[] cookies = request.getCookies();
+        <p><strong>First Name:</strong> <%= currentUser.get_first_name() %></p>
+        <p><strong>Last Name:</strong> <%= currentUser.get_last_name() %></p>
+        <p><strong>Email:</strong> <%= currentUser.get_email() != null ? currentUser.get_email() : "N/A" %></p>
+        <p><strong>Phone Number:</strong> <%= currentUser.get_phone_num() %></p>
+        <p><strong>Card Number:</strong> **** **** **** <%= currentUser.get_card_num().substring(currentUser.get_card_num().length() - 4) %></p>
+        <p><strong>Card Expiry Date:</strong> <%= currentUser.get_card_expiry_date() %></p>
+        <p><strong>CVC:</strong> <%= currentUser.get_card_cvc() %></p>
+        <p><strong>Street:</strong> <%= currentUser.get_address_street() %> <%= currentUser.get_address_street() %></p>
+        <p><strong>City:</strong> <%= currentUser.get_address_city() %></p>
+        <p><strong>Postcode:</strong> <%= currentUser.get_address_postcode() %></p>
 
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("first_name".equals(cookie.getName())) {
-                        firstName = cookie.getValue();
-                    }
-                    if ("last_name".equals(cookie.getName())) {
-                        lastName = cookie.getValue();
-                    }
-                    if ("email".equals(cookie.getName())) {
-                        email = cookie.getValue();
-                    }
-                    if ("card_num".equals(cookie.getName())) {
-                        cardNum = cookie.getValue();
-                    }
-                    if ("card_exp".equals(cookie.getName())) {
-                        cardExp = cookie.getValue();
-                    }
-                    if ("phone".equals(cookie.getName())) {
-                        phone = cookie.getValue();
-                    }
-                }
-            }
-        %>
 
-        <b>First Name:</b> <%= firstName %><br />
-        <b>Last Name:</b> <%= lastName %><br />
-        <b>Email:</b> <%= email %><br />
-        <b>Card Number:</b> <%= cardNum %><br />
-        <b>Card Expiry:</b> <%= cardExp %><br />
-        <b>Phone Number:</b> <%= phone %><br />
 
     </body>
 </html>
