@@ -65,13 +65,42 @@ h1 {
 }
 
 table, th, td {
-	border: 1px solid;
+	border: 1px solid black;
+	padding-left: 0.1vw;
+	padding-right: 0.1vw;
 }
-td {
+
+.admin-table {
+	text-align: center;
+	width: 100%;
+	margin-left: 0.03vw;
+	margin-right: auto;
+	max-width: 99.97vw;
+	border-collapse: collapse;
+	font-family: sans-serif;
+	box-shadow: 0vw 0vw 0.2vw #00000040;
+}
+.admin-table form {
+	margin: auto;
+}
+.admin-table thead tr {
+	background-color: #7f9bbb;
 	text-align: center;
 }
-.admin-table {
-	border-collapse: collapse;
+
+.admin-table th td {
+	padding: 1vw;
+}
+
+.admin-table tbody tr:hover {
+	background-color: #9fbbdb;
+	color: #232323;
+	transition: 0.2s;
+}
+
+.sub-admin-table thead tr:hover {
+	background-color: #7f9bbb;
+	color: #232323;
 }
 .searchBar {
   width: 96%;
