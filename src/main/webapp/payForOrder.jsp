@@ -16,11 +16,13 @@
 
     <%
         // Fetch the current user and their cart from the session and database
-        User user = (User) session.getAttribute("user");
+        //User user = (User) session.getAttribute("user");
+        Database db = (Database) application.getAttribute("database");
+        User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
-            Database db = (Database) application.getAttribute("database");
+            //Database db = (Database) application.getAttribute("database");
             Cart cart = db.get_cart(user.get_id(), "owner_id");
 
             if (cart == null) {
@@ -110,6 +112,11 @@
         <a href="landing.jsp" class="button">Home Page</a>
         <a href="checkout.jsp" class="button">Review Order</a>
     </div>
+
+    <%
+            } // End of cart check
+        } // End of user check
+    %>
 
 </body>
 </html>
