@@ -19,17 +19,24 @@
     <body>
         <div class="menu">
         <h1>Menu</h1>
-        <div class="menu-grid-container">
+
+        <div class="searchBar">
+            <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products..">
+        </div>
+        
+        <div class="menu-grid-container" id="menu">
         <%
             try {   
                 for (MenuItem i : menuItems) {
         %>
-            <div class="menu-grid-item">
-                <%String imgLocation = "menuImages/" + i.getImg();%>
-                <img src=<%out.println(imgLocation);%> alt="Pizza">
-                <div class="menu-grid-item-name"><%out.println(i.getName());%></div>
-                <div class="menu-grid-item-name"><%out.println("$" + i.getPrice());%></div>
-            </div>
+
+        <% String priceString = "$" + i.getPrice(); %>
+        <div class="menu-grid-item" onclick="openModal('<%= i.getName() %>', '<%= priceString %>', '<%= i.getDescription() %>', 'menuImages/<%= i.getImg() %>')">
+            <img src="menuImages/<%= i.getImg() %>" alt="Pizza">
+            <div class="menu-grid-item-name"><%= i.getName() %></div>
+            <div class="menu-grid-item-price"><%= "$" + i.getPrice() %></div>
+        </div>
+
         <%  
                 }
             }
@@ -38,8 +45,57 @@
             }
         %>
         </div>   
+
     <div style="margin-top: 20px;">
         <a href="checkout.jsp" class="button">Go to Checkout</a>
     </div>
+
+    <div id="itemModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="modal-close-button" onclick="closeModal(event)">&times;</span>
+            <img id="modalImage" src="" alt="Item Image" class="modal-image">
+            <div class="modal-details">
+                <h2 id="modalName">Item Name</h2>
+                <p id="modalPrice">Item Price</p>
+                <p id="modalDescription">Item Description</p>
+                <button id="modalButton">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchMenu() {
+            var input, filter, menuItems;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            menuItems = document.querySelectorAll(".menu-grid-item");
+
+            menuItems.forEach(function(menuItem) {
+                var itemName = menuItem.querySelector(".menu-grid-item-name").textContent.toUpperCase();
+
+                if (itemName.indexOf(filter) > -1) {
+                    menuItem.style.display = "block";
+                } else {
+                    menuItem.style.display = "none"
+                }
+            });
+        }
+
+        function openModal(name, price, description, image) {
+                document.getElementById("modalName").textContent = name;
+                document.getElementById("modalPrice").textContent = price;
+                document.getElementById("modalDescription").textContent = description;
+                document.getElementById("modalImage").src = image;
+
+                document.getElementById("itemModal").style.display = "flex";
+            }
+
+        function closeModal(event) {
+            if (event.target.className === "modal" || event.target.className === "modal-close-button") {
+                document.getElementById("itemModal").style.display = "none";
+            }
+        }
+    </script>
+    
     </body>
 </html>
