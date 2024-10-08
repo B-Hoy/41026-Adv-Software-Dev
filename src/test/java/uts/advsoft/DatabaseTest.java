@@ -2,10 +2,14 @@ package uts.advsoft;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import uts.advsoft.Database;
 import uts.advsoft.User;
 import uts.advsoft.Order;
+import uts.advsoft.MenuItem;
 
 class DatabaseTest{
 
@@ -45,4 +49,5 @@ class DatabaseTest{
 		assertEquals(orders[0].get_status_level(), "Cooking");
 		assertEquals(orders[0].get_order_price(), (float)99.98);
 	}
+
 }
