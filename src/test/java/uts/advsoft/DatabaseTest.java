@@ -1,6 +1,10 @@
 package uts.advsoft;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import uts.advsoft.Database;
 import uts.advsoft.User;
@@ -173,4 +177,5 @@ class DatabaseTest{
 		User u = db.get_user("testing@test.com", "testpasswd");
 		assertTrue(u != null);
 	}
+
 }
