@@ -146,7 +146,7 @@
 					</select>
 					<br>
 					<label for="amount">Amount:</label>
-					<input type="text" id="amount" name="amount" value="">
+					<input type="number" id="amount" name="amount" value="">
 					<br>
 					<input type="submit" value="Submit">
 				</form>
@@ -161,7 +161,7 @@
 					</select>
 					<br>
 					<label for="amount">Amount:</label>
-					<input type="text" id="amount" name="amount" value="">
+					<input type="number" id="amount" name="amount" value="">
 					<br>
 					<input type="submit" value="Submit">
 				</form>
