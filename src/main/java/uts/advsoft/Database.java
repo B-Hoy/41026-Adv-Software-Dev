@@ -130,7 +130,7 @@ public class Database{
 			ps.setInt(13, addrpcode);
 			ps.executeUpdate();
 			
-			ps = prepareStatement("INSERT INTO Carts VALUES((?), (?), '', 0.0)");
+			ps = db_con.prepareStatement("INSERT INTO Carts VALUES((?), (?), '', 0.0)");
 			ps.setInt(1, generate_id("Carts"));
 			ps.setInt(2, uid);
 			ps.executeUpdate();
