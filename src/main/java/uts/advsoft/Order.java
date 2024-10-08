@@ -3,6 +3,7 @@ import uts.advsoft.MenuItem;
 import uts.advsoft.MenuItemEntry;
 
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class Order{
 	int id, owner_id, driver_id;
@@ -49,6 +50,14 @@ public class Order{
 	}
 	public float get_order_price(){
 		return order_price;
+	}
+	public String get_order_price_formatted(){
+		if (order_price > 0.0){
+			DecimalFormat df = new DecimalFormat("#.00");
+			return "$" + df.format(order_price);
+		}else{
+			return "$0.00";
+		}
 	}
 	public void set_delivery_method(String delivery_method){
 		this.delivery_method = delivery_method;

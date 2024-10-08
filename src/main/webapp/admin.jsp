@@ -135,7 +135,7 @@
 					</tr>
 					<%}%>
 				</table></td>
-			<td><%=carts[i].get_price()%></td>
+			<td><%=carts[i].get_price_formatted()%></td>
 			<td>
 				<form method="post">
 					<input type="hidden" id="form" name="form" value="add_to_cart">
@@ -285,7 +285,7 @@
 							</select>
 							<%}%>
 						</td>
-						<td><%=orders[i].get_order_price()%></td>
+						<td><%=orders[i].get_order_price_formatted()%></td>
 						<td><input type="submit" value="Submit"></td>
 						</form>
 					</tr>

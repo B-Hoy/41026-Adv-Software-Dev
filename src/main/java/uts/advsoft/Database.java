@@ -19,7 +19,29 @@ public class Database{
 			Statement s = db_con.createStatement();
 
 			s.executeUpdate("CREATE TABLE Users(id INTEGER NOT NULL PRIMARY KEY, email TEXT NOT NULL UNIQUE, first_name TEXT NOT NULL, last_name TEXT NOT NULL, password TEXT NOT NULL, phone_number TEXT NOT NULL, register_date TEXT NOT NULL, card_num TEXT NOT NULL, card_expiry_date TEXT NOT NULL, card_cvc INTEGER NOT NULL, address_street_num TEXT NOT NULL, address_street TEXT NOT NULL, address_city TEXT NOT NULL, address_postcode INTEGER NOT NULL)");
-			s.executeUpdate("INSERT INTO Users VALUES(1, 'testing@test.com', 'test', 'user', 'testpasswd', '+61400000000', DATETIME('now', '+10 hours'), 1234567890987654, '09/24', 123, 'PO Box 1', 'Test Street', 'Sydney', 2000)");
+			s.executeUpdate("INSERT INTO Users VALUES" + 
+				"(1, 'testing@test.com', 'test', 'user', 'testpasswd', '+61400000000', DATETIME('now', '+10 hours'), 1234567890987654, '09/24', 123, 'PO Box 1', 'Test Street', 'Sydney', 2000)," +
+				"(2, 'john.doe@mail.com', 'John', 'Doe', 'P@ssw0rd123', '+61412345678', DATETIME('now', '+10 hours'), '4111111111111111', '12/25', 123, '123', 'Main St', 'Springfield', 1234)," +
+				"(3, 'jane.smith@example.net', 'Jane', 'Smith', 'W0wSecure!456', '+61423456789', DATETIME('now', '+10 hours'), '5500000000000004', '05/24', 456, '456', 'Elm St', 'Metropolis', 5678)," +
+				"(4, 'alice.jones@demo.org', 'Alice', 'Jones', 'S3cureP@ss789', '+61434567890', DATETIME('now', '+10 hours'), '3400000000000009', '11/26', 789, '789', 'Oak St', 'Smalltown', 4321)," +
+				"(5, 'bob.brown@webmail.com', 'Bob', 'Brown', 'B0bby!P@ss', '+61445678901', DATETIME('now', '+10 hours'), '6011000000000001', '09/23', 101, '101', 'Pine St', 'Big City', 8765)," +
+				"(6, 'charlie.white@sample.com', 'Charlie', 'White', 'Ch@rlie1234', '+61456789012', DATETIME('now', '+10 hours'), '3530111111111111', '03/27', 202, '202', 'Maple St', 'Townsville', 3456)," +
+				"(7, 'diana.green@mailbox.org', 'Diana', 'Green', 'D!anaSecure789', '+61467890123', DATETIME('now', '+10 hours'), '4111111111111111', '04/25', 303, '303', 'Cedar St', 'Villageburg', 7890)," +
+				"(8, 'ethan.black@testing.com', 'Ethan', 'Black', 'Ethan!Password1', '+61478901234', DATETIME('now', '+10 hours'), '6011000000000003', '06/24', 404, '404', 'Birch St', 'Countyline', 2345)," +
+				"(9, 'fiona.adams@service.net', 'Fiona', 'Adams', 'F!0naPassword2', '+61489012345', DATETIME('now', '+10 hours'), '5500000000000005', '10/23', 505, '505', 'Walnut St', 'Rivertown', 6789)," +
+				"(10, 'george.miller@platform.com', 'George', 'Miller', 'Ge0rgeSecure3', '+61490123456', DATETIME('now', '+10 hours'), '3400000000000002', '07/26', 606, '606', 'Ash St', 'Capital City', 1357)," +
+				"(11, 'hannah.jackson@provider.org', 'Hannah', 'Jackson', 'H@nnaH!456', '+61491234567', DATETIME('now', '+10 hours'), '3530111111111112', '02/25', 707, '707', 'Poplar St', 'Hilltop', 2468)," +
+				"(12, 'ian.lee@myemail.com', 'Ian', 'Lee', '1A!nSecure456', '+61492234568', DATETIME('now', '+10 hours'), '4111111111111111', '01/27', 808, '808', 'Chestnut St', 'Lakeview', 3579)," +
+				"(13, 'jessica.clark@virtual.net', 'Jessica', 'Clark', 'J3ss!C@rPassword', '+61493245679', DATETIME('now', '+10 hours'), '6011000000000006', '03/24', 909, '909', 'Spruce St', 'Baytown', 4680)," +
+				"(14, 'kevin.wright@xyz.com', 'Kevin', 'Wright', 'K3vinPass!456', '+61494256780', DATETIME('now', '+10 hours'), '5500000000000007', '12/25', 111, '111', 'Fir St', 'Greenfield', 5791)," +
+				"(15, 'laura.hall@mail.org', 'Laura', 'Hall', 'L@uraSecure234', '+61495267891', DATETIME('now', '+10 hours'), '3400000000000008', '05/26', 222, '222', 'Larch St', 'Oceanview', 6802)," +
+				"(16, 'mark.harris@company.com', 'Mark', 'Harris', 'M@rkPassword789', '+61496278902', DATETIME('now', '+10 hours'), '3530111111111113', '09/25', 333, '333', 'Sequoia St', 'Plainsville', 7913)," +
+				"(17, 'nora.martin@outlook.com', 'Nora', 'Martin', 'N0r@Secure123', '+61497289013', DATETIME('now', '+10 hours'), '4111111111111111', '11/24', 444, '444', 'Redwood St', 'Woodland', 8024)," +
+				"(18, 'oscar.thompson@network.org', 'Oscar', 'Thompson', '0sc@rP@ss456', '+61498290124', DATETIME('now', '+10 hours'), '6011000000000000', '07/25', 555, '555', 'Cypress St', 'Forest City', 9135)," +
+				"(19, 'paula.roberts@mailservice.com', 'Paula', 'Roberts', 'P@ul@Secure234', '+61499201235', DATETIME('now', '+10 hours'), '5500000000000001', '12/27', 666, '666', 'Hemlock St', 'Hill Valley', 0246)," +
+				"(20, 'quinn.walker@anymail.com', 'Quinn', 'Walker', 'Q!innSecure567', '+61440012345', DATETIME('now', '+10 hours'), '3400000000000004', '04/26', 777, '777', 'Fir St', 'Summitville', 1358)," +
+				"(21, 'rachel.young@internetmail.org', 'Rachel', 'Young', 'R@chelP@ss123', '+61440123456', DATETIME('now', '+10 hours'), '3530111111111115', '08/23', 888, '888', 'Willow St', 'Crestwood', 2466)"
+			);
 
 			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
 			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, 0, '1:1,2:2,3:3', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 93.94)");
@@ -87,6 +109,9 @@ public class Database{
 	}
 	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, String cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
 		try {
+			if (email == null || email.trim().isEmpty() || fname == null || fname.trim().isEmpty() || lname == null || lname.trim().isEmpty() || password == null || password.trim().isEmpty() || pnum == null || pnum.trim().isEmpty() || cardnum == null || cardnum.trim().isEmpty() || cardexp == null || cardexp.trim().isEmpty() || cardcvc == null || cardcvc.trim().isEmpty() || addrnum == null || addrnum.trim().isEmpty() || addst == null || addst.trim().isEmpty() || addrcity == null || addrcity.trim().isEmpty()){
+				throw new IllegalArgumentException("Found null or empty string");
+			}
 			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Users VALUES((?), (?), (?), (?), (?), (?), DATETIME('now', '+10 hours'), (?), (?), (?), (?), (?), (?), (?))");
 			ps.setInt(1, generate_id("Users"));
 			ps.setString(2, email);
@@ -264,8 +289,16 @@ public class Database{
 		return c;
 	}
 	public void delete_cart(int user_id){
-		try{
+		/*try{
 			PreparedStatement ps = db_con.prepareStatement("DELETE FROM Carts WHERE owner_id = (?)");
+			ps.setInt(1, user_id);
+			ps.executeUpdate();
+			ps.close();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}*/
+		try{
+			PreparedStatement ps = db_con.prepareStatement("UPDATE Carts SET menu_items = '', price = 0.0 WHERE owner_id = (?)");
 			ps.setInt(1, user_id);
 			ps.executeUpdate();
 			ps.close();
