@@ -173,7 +173,7 @@ public class Database{
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
-				return new MenuItem(id, rs.getString("name"), rs.getDouble("price"), rs.getString("image"));
+				return new MenuItem(id, rs.getString("name"), rs.getDouble("price"), rs.getString("image"), rs.getString("description"));
 			}
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
@@ -187,7 +187,7 @@ public class Database{
 			ps.setString(1, "%" + name + "%");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
-				return new MenuItem(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getString("image"));
+				return new MenuItem(rs.getInt("id"), rs.getString("name"), rs.getDouble("price"), rs.getString("image"), rs.getString("description"));
 			}
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
