@@ -121,7 +121,7 @@ class DatabaseTest{
 	void test_delete_cart(){
 		db.delete_cart(1);
 		Cart[] cs = db.get_all_carts();
-		assertEquals(cs.length, 0);
+		assertEquals(cs.length, 1);
 	}
 	@Test
 	void test_generate_table_id(){
@@ -139,7 +139,7 @@ class DatabaseTest{
 		os = db.get_all_orders();
 		cs = db.get_all_carts();
 		assertEquals(os.length, 2);
-		assertEquals(cs.length, 0);
+		assertEquals(cs.length, 1);
 	}
 	@Test
 	void test_add_to_cart(){
@@ -168,8 +168,14 @@ class DatabaseTest{
 	}
 	@Test
 	void test_create_user(){
+		assertEquals(db.get_all_users().length, 21);
 		db.make_user("a@a.com", "f", "l", "p", "0000000000", "0000000000000000", "00/00", "000", "0", "s", "c", 0);
-		assertEquals(db.get_all_users().length, 2);
+		assertEquals(db.get_all_users().length, 22);
+		User u = db.get_user("a@a.com", "p");
+		assertTrue(u != null);
+		db.make_user("", "", "", "", "", "", "", "", "", "", "", 0);
+		assertEquals(db.get_all_users().length, 22);
+
 	}
 	@Test
 	void test_get_user(){

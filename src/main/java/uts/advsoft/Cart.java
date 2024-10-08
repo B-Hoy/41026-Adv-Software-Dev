@@ -3,6 +3,7 @@ import uts.advsoft.MenuItem;
 import uts.advsoft.MenuItemEntry;
 import uts.advsoft.Database;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class Cart{
 	int id, owner_id;
@@ -14,10 +15,12 @@ public class Cart{
 		this.owner_id = owner_id;
 		this.cart_price = cart_price;
 		this.item_list = new ArrayList<MenuItemEntry>();
-		String[] items = menu_items.split("[,]");
-		for (String i : items){
-			String[] j = i.split("[:]");
-			this.item_list.add(new MenuItemEntry(Integer.valueOf(j[0]), Integer.valueOf(j[1])));
+		if (menu_items != null && !menu_items.trim().isEmpty()){
+			String[] items = menu_items.split("[,]");
+			for (String i : items){
+				String[] j = i.split("[:]");
+				this.item_list.add(new MenuItemEntry(Integer.valueOf(j[0]), Integer.valueOf(j[1])));
+			}
 		}
 	}
 	public Cart(int id, int owner_id){
@@ -56,6 +59,14 @@ public class Cart{
 	}
 	public double get_price(){
 		return cart_price;
+	}
+	public String get_price_formatted(){
+		if (cart_price > 0.0){
+			DecimalFormat df = new DecimalFormat("#.00");
+			return "$" + df.format(cart_price);
+		}else{
+			return "$0.00";
+		}
 	}
 	public void add_item(int item_id, int amount){
 		MenuItemEntry curr;
