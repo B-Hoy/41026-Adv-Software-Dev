@@ -35,13 +35,15 @@
 
     <%
         // Fetch current user from session
-        User user = (User) session.getAttribute("user");
+        //User user = (User) session.getAttribute("user");
+        Database db = (Database) application.getAttribute("database");
+        User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
             // Fetch the database and the user's cart
-            Database db = (Database) application.getAttribute("database");
-            Cart cart = db.get_cart(user.get_id(), "owner_id");
+            //Database db = (Database) application.getAttribute("database");
+            Cart cart = db.get_cart(1, "id");
 
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
@@ -49,84 +51,85 @@
                 MenuItemEntry[] cartItems = cart.get_cart_items();
     %>
 
-    <!-- Display cart items in table -->
-    <h2>Your Order</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for (MenuItemEntry item : cartItems) { %>
+    <form action="payForOrder.jsp" method="post">
+        <!-- Display cart items in table -->
+        <h2>Your Order</h2>
+        <table>
+            <thead>
                 <tr>
-                    <td><%= item.get_item().getName() %></td>
-                    <td><%= item.get_amount() %></td>
-                    <td>$<%= String.format("%.2f", item.get_item().getPrice()) %></td>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
                 </tr>
-            <% } %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% for (MenuItemEntry item : cartItems) { %>
+                    <tr>
+                        <td><%= item.get_item().getName() %></td>
+                        <td><%= item.get_amount() %></td>
+                        <td>$<%= String.format("%.2f", item.get_item().getPrice()) %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
 
-    <!-- Delivery/Pickup Options -->
-    <h2>Select Delivery Option</h2>
-    <label>
-        <input type="radio" name="deliveryOption" value="pickup" required>
-        Pick Up
-    </label>
-    <br>
-    <label>
-        <input type="radio" name="deliveryOption" value="delivery" required>
-        Delivery
-    </label>
-
-    <!-- Delivery Details (Hidden by default - unless delivery selected) -->
-    <div id="deliverySection" style="display:none; margin-top: 20px;">
-        <h3>Delivery Information</h3>
-        <label for="streetNumber">Street Number:</label>
-        <input type="text" id="streetNumber" name="streetNumber" value="<%= user.get_address_street_num() %>" required>
+        <!-- Delivery/Pickup Options -->
+        <h2>Select Delivery Option</h2>
+        <label>
+            <input type="radio" name="deliveryOption" value="pickup" required>
+            Pick Up
+        </label>
         <br>
+        <label>
+            <input type="radio" name="deliveryOption" value="delivery" required>
+            Delivery
+        </label>
 
-        <label for="streetAddress">Street Address:</label>
-        <input type="text" id="streetAddress" name="streetAddress" value="<%= user.get_address_street() %>" required>
-        <br>
+        <!-- Delivery Details (Hidden by default - unless delivery selected) -->
+        <div id="deliverySection" style="display:none; margin-top: 20px;">
+            <h3>Delivery Information</h3>
+            <label for="streetNumber">Street Number:</label>
+            <input type="text" id="streetNumber" name="streetNumber" value="<%= user.get_address_street_num() %>" required>
+            <br>
 
-        <label for="city">Suburb/City:</label>
-        <input type="text" id="city" name="city" value="<%= user.get_address_city() %>" required>
-        <br>
+            <label for="streetAddress">Street Address:</label>
+            <input type="text" id="streetAddress" name="streetAddress" value="<%= user.get_address_street() %>" required>
+            <br>
 
-        <label for="postcode">Postcode:</label>
-        <input type="text" id="postcode" name="postcode" value="<%= user.get_address_postcode() %>" pattern="[0-9]{4}" required>
-        <small>Format: 4 digits</small>
-        <br><br>
-    </div>
+            <label for="city">Suburb/City:</label>
+            <input type="text" id="city" name="city" value="<%= user.get_address_city() %>" required>
+            <br>
 
-    <!-- Display subtotal -->
-    <h2>Order Summary</h2>
-    <table>
-        <tr>
-            <td>Subtotal</td>
-            <td>$<%= String.format("%.2f", cart.get_price()) %></td>
-        </tr>
-        <tr>
-            <td>Delivery Fee</td>
-            <td id="deliveryFee">$0.00</td> <!-- Will update based on delivery option -->
-        </tr>
-        <tr>
-            <td>Total Price</td>
-            <td id="totalPrice">$<%= String.format("%.2f", cart.get_price()) %></td>
-        </tr>
-    </table>
+            <label for="postcode">Postcode:</label>
+            <input type="text" id="postcode" name="postcode" value="<%= user.get_address_postcode() %>" pattern="[0-9]{4}" required>
+            <small>Format: 4 digits</small>
+            <br><br>
+        </div>
 
-    <!-- Navigation Buttons -->
-    <div style="margin-top: 20px;">
-        <a href="landing.jsp" class="button">Home Page</a>
-        <a href="menu.jsp" class="button">Continue Ordering</a>
-        <button type="submit" formaction="payForOrder.jsp" class="button">Proceed to Payment</button>
-    </div>
+        <!-- Display subtotal -->
+        <h2>Order Summary</h2>
+        <table>
+            <tr>
+                <td>Subtotal</td>
+                <td>$<%= String.format("%.2f", cart.get_price()) %></td>
+            </tr>
+            <tr>
+                <td>Delivery Fee</td>
+                <td id="deliveryFee">$0.00</td> <!-- Will update based on delivery option -->
+            </tr>
+            <tr>
+                <td>Total Price</td>
+                <td id="totalPrice">$<%= String.format("%.2f", cart.get_price()) %></td>
+            </tr>
+        </table>
 
+        <!-- Navigation Buttons -->
+        <div style="margin-top: 20px;">
+            <a href="landing.jsp" class="button">Home Page</a>
+            <a href="menu.jsp" class="button">Continue Ordering</a>
+            <button type="submit" class="button">Proceed to Payment</button>
+        </div>
+    </form>
     <%
             } // End of cart check
         } // End of user check
