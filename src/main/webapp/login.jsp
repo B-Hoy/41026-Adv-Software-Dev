@@ -11,7 +11,6 @@
         Database db = (Database)application.getAttribute("database");
 
     if (email != null && password != null) {
-        %><p><%=email + " " + password%></p><%
         User user = db.get_user(email, password); // Use the existing method to check for user
         if (user != null) {
             session.setAttribute("user", user);
