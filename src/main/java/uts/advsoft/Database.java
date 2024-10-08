@@ -114,7 +114,8 @@ public class Database{
 				throw new IllegalArgumentException("Found null or empty string");
 			}
 			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Users VALUES((?), (?), (?), (?), (?), (?), DATETIME('now', '+10 hours'), (?), (?), (?), (?), (?), (?), (?))");
-			ps.setInt(1, generate_id("Users"));
+			int uid = generate_id("Users");
+			ps.setInt(1, uid);
 			ps.setString(2, email);
 			ps.setString(3, fname);
 			ps.setString(4, lname);
@@ -128,6 +129,12 @@ public class Database{
 			ps.setString(12, addrcity);
 			ps.setInt(13, addrpcode);
 			ps.executeUpdate();
+			
+			ps = prepareStatement("INSERT INTO Carts VALUES((?), (?), '', 0.0)");
+			ps.setInt(1, generate_id("Carts"));
+			ps.setInt(2, uid);
+			ps.executeUpdate();
+			ps.close();
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
 		}
