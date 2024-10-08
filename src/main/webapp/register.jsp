@@ -79,7 +79,7 @@
                     <p><strong>CVC:</strong></p>
                     <div class="container">
                         <input id="card_cvc" 
-                        type="text" name ="card_cvc" 
+                        type="number" name ="card_cvc" 
                         placeholder=" 987 "required>
                     </div>
     
@@ -107,7 +107,7 @@
                     <p><strong>Postcode:</strong></p>
                     <div class="container">
                         <input id="address_postcode" 
-                        type="text" name="address_postcode" 
+                        type="number" name="address_postcode" 
                         placeholder="2000" required>
                     </div>
 
@@ -116,13 +116,6 @@
                     <input type="submit" value="Submit">
     
                 </form>
-
-                <script>
-                    document.getElementById("form_type").addEventListener("submit", function() {
-                        // Redirect to main.html
-                        window.location.href = "/devops-assignment/register_user.jsp";
-                    });
-                </script>
 
             </div>
         </div>

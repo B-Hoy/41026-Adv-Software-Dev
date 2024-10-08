@@ -16,7 +16,7 @@
     String phoneNumber = request.getParameter("phone_num");
     String cardNum = request.getParameter("card_num");
     String cardExpiry = request.getParameter("card_exp");
-    String cardCvv = request.getParameter("card_cvc");
+    int cardCvv = Integer.parseInt(request.getParameter("card_cvc"));
     String addressStreetNum = request.getParameter("address_street_num");
     String addressStreet = request.getParameter("address_street");
     String addressCity = request.getParameter("address_city");

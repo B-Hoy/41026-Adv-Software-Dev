@@ -97,8 +97,8 @@ public class Database{
 	public User get_user(String email, String password){
 		try{
 			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Users WHERE email = (?) AND password = (?)");
-			ps.setString(1, email);
-			ps.setString(2, password);
+			ps.setString(1, email.strip());
+			ps.setString(2, password.strip());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
 				return new User(rs.getInt("id"), rs.getString("email"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("phone_number"), rs.getString("register_date"), rs.getString("card_num"), rs.getString("card_expiry_date"), rs.getInt("card_cvc"), rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode"));
@@ -108,9 +108,9 @@ public class Database{
 		}
 		return null; // no such user
 	}
-	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, String cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
+	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, int cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
 		try {
-			if (email == null || email.trim().isEmpty() || fname == null || fname.trim().isEmpty() || lname == null || lname.trim().isEmpty() || password == null || password.trim().isEmpty() || pnum == null || pnum.trim().isEmpty() || cardnum == null || cardnum.trim().isEmpty() || cardexp == null || cardexp.trim().isEmpty() || cardcvc == null || cardcvc.trim().isEmpty() || addrnum == null || addrnum.trim().isEmpty() || addst == null || addst.trim().isEmpty() || addrcity == null || addrcity.trim().isEmpty()){
+			if (email == null || email.trim().isEmpty() || fname == null || fname.trim().isEmpty() || lname == null || lname.trim().isEmpty() || password == null || password.trim().isEmpty() || pnum == null || pnum.trim().isEmpty() || cardnum == null || cardnum.trim().isEmpty() || cardexp == null || cardexp.trim().isEmpty() || addrnum == null || addrnum.trim().isEmpty() || addst == null || addst.trim().isEmpty() || addrcity == null || addrcity.trim().isEmpty()){
 				throw new IllegalArgumentException("Found null or empty string");
 			}
 			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Users VALUES((?), (?), (?), (?), (?), (?), DATETIME('now', '+10 hours'), (?), (?), (?), (?), (?), (?), (?))");
@@ -122,7 +122,7 @@ public class Database{
 			ps.setString(6, pnum);
 			ps.setString(7, cardnum);
 			ps.setString(8, cardexp);
-			ps.setString(9, cardcvc);
+			ps.setInt(9, cardcvc);
 			ps.setString(10, addrnum);
 			ps.setString(11, addst);
 			ps.setString(12, addrcity);
