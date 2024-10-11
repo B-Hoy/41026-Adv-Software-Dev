@@ -50,6 +50,8 @@
         <a href="checkout.jsp" class="button">Go to Checkout</a>
     </div>
 
+    <!-- Modal: A popup that will appear when clicking on an item which displays details about that item -->
+    <!-- A single modal is used for all items, the details are changed via the openModal() function in the script below -->
     <div id="itemModal" class="modal" onclick="closeModal(event)">
         <div class="modal-content">
             <span class="modal-close-button" onclick="closeModal(event)">&times;</span>
@@ -81,6 +83,7 @@
             });
         }
 
+        // Gets the details for the item that was clicked on, and updates the modal to display the details
         function openModal(name, price, description, image) {
                 document.getElementById("modalName").textContent = name;
                 document.getElementById("modalPrice").textContent = price;
@@ -89,7 +92,7 @@
 
                 document.getElementById("itemModal").style.display = "flex";
             }
-
+        // Hides the modal when the user presses outside the window or on the close button 
         function closeModal(event) {
             if (event.target.className === "modal" || event.target.className === "modal-close-button") {
                 document.getElementById("itemModal").style.display = "none";
