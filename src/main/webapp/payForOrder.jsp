@@ -16,13 +16,11 @@
 
     <%
         // Fetch the current user and their cart from the session and database
-        //User user = (User) session.getAttribute("user");
         Database db = (Database) application.getAttribute("database");
         User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
-            //Database db = (Database) application.getAttribute("database");
             Cart cart = db.get_cart(user.get_id(), "owner_id");
 
             if (cart == null) {
@@ -81,13 +79,13 @@
                     !enteredCvc.equals(String.valueOf(user.get_card_cvc()))) {
                     out.println("<p style='color: red;'>Incorrect payment details! Please try again.</p>");
                 } else {
-                    // Add new order to database
+                    // Address variables for the order
                     String streetNum = user.get_address_street_num();
                     String street = user.get_address_street();
                     String city = user.get_address_city();
                     int postcode = user.get_address_postcode();
 
-                    // If delivery address has been changed, update with new info
+                    // If delivery is chosen and the address was updated, get the new values
                     if (deliveryMethod.equals("delivery")) {
                         streetNum = request.getParameter("streetNumber");
                         street = request.getParameter("streetAddress");
@@ -95,6 +93,7 @@
                         postcode = Integer.parseInt(request.getParameter("postcode"));
                     }
 
+                    // Add new order to the database
                     db.create_order(user.get_id(), cart, totalPrice, deliveryMethod, streetNum, street, city, postcode);
 
                     // Redirect to submitOrder.jsp if successful
@@ -120,6 +119,5 @@
 
 </body>
 </html>
-
 
 

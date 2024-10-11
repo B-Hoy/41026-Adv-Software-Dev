@@ -11,22 +11,41 @@
     <link rel="stylesheet" href="style.css" type="text/css">
     <title>Checkout</title>
     <script>
-        function toggleDeliverySection() {
-            const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+        function updateDeliveryOptions() {
+            const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked');
             const deliverySection = document.getElementById("deliverySection");
-            
-            if (deliveryOption === 'delivery') {
-                deliverySection.style.display = "block";  // Show delivery details section
+            const deliveryFeeElement = document.getElementById("deliveryFee");
+            const totalPriceElement = document.getElementById("totalPrice");
+            const hiddenDeliveryFee = document.getElementById("hiddenDeliveryFee");
+
+            // Define the delivery fee
+            const deliveryFee = 5.99;
+            const subtotal = parseFloat(cart.get_price());
+
+            let finalDeliveryFee = 0;
+
+            if (deliveryOption && deliveryOption.value === 'delivery') {
+                deliverySection.style.display = "block";
+                finalDeliveryFee = deliveryFee;
             } else {
-                deliverySection.style.display = "none";  // Hide delivery details section
+                deliverySection.style.display = "none";
+                finalDeliveryFee = 0;
             }
+
+            // Update the delivery fee and total price on the page
+            deliveryFeeElement.innerText = "$" + finalDeliveryFee.toFixed(2);
+            totalPriceElement.innerText = "$" + (subtotal + finalDeliveryFee).toFixed(2);
+            hiddenDeliveryFee.value = finalDeliveryFee;
         }
 
         document.addEventListener("DOMContentLoaded", function() {
             const deliveryOptions = document.querySelectorAll('input[name="deliveryOption"]');
             deliveryOptions.forEach(option => {
-                option.addEventListener("change", toggleDeliverySection);
+                option.addEventListener("change", updateDeliveryOptions);
             });
+
+            // Set initial values on page load
+            updateDeliveryOptions();
         });
     </script>
 </head>
@@ -34,16 +53,12 @@
     <h1>Checkout</h1>
 
     <%
-        // Fetch current user from session
-        User user = (User) session.getAttribute("user");
-        //Database db = (Database) application.getAttribute("database");
-        //User user = db.get_user("testing@test.com", "testpasswd");
+        Database db = (Database) application.getAttribute("database");
+        User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
-            // Fetch the database and the user's cart
-            Database db = (Database) application.getAttribute("database");
-            Cart cart = db.get_cart(user.get_id(), "id");
+            Cart cart = db.get_cart(1, "id");
 
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
@@ -85,7 +100,7 @@
             Delivery
         </label>
 
-        <!-- Delivery Details (Hidden by default - unless delivery selected) -->
+        <!-- Delivery Details Section (Hidden by default - unless delivery selected) -->
         <div id="deliverySection" style="display:none; margin-top: 20px;">
             <h3>Delivery Information</h3>
             <label for="streetNumber">Street Number:</label>
@@ -106,7 +121,10 @@
             <br><br>
         </div>
 
-        <!-- Display subtotal -->
+        <!-- Hidden Input to Store Delivery Fee -->
+        <input type="hidden" id="hiddenDeliveryFee" name="deliveryFee" value="0.00">
+
+        <!-- Display subtotal and total price -->
         <h2>Order Summary</h2>
         <table>
             <tr>
@@ -115,7 +133,7 @@
             </tr>
             <tr>
                 <td>Delivery Fee</td>
-                <td id="deliveryFee">$0.00</td> <!-- Will update based on delivery option -->
+                <td id="deliveryFee">$</td>
             </tr>
             <tr>
                 <td>Total Price</td>
@@ -136,4 +154,3 @@
     %>
 </body>
 </html>
-
