@@ -35,15 +35,15 @@
 
     <%
         // Fetch current user from session
-        //User user = (User) session.getAttribute("user");
-        Database db = (Database) application.getAttribute("database");
-        User user = db.get_user("testing@test.com", "testpasswd");
+        User user = (User) session.getAttribute("user");
+        //Database db = (Database) application.getAttribute("database");
+        //User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
             // Fetch the database and the user's cart
-            //Database db = (Database) application.getAttribute("database");
-            Cart cart = db.get_cart(1, "id");
+            Database db = (Database) application.getAttribute("database");
+            Cart cart = db.get_cart(user.get_id(), "id");
 
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
