@@ -145,7 +145,7 @@ public class Database{
 			Statement s = db_con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT * FROM Orders");
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
 			}
 			s.close();
 		}catch (Exception e){
@@ -160,7 +160,7 @@ public class Database{
 			ps.setInt(1, user_id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
 			}
 			ps.close();
 		}catch (Exception e){
@@ -174,7 +174,7 @@ public class Database{
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
-				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"));
+				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f);
 			}
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
