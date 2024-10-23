@@ -19,5 +19,4 @@ stages:
       jdkVersionOption: '1.17'
       mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
       options: '-s $(secret_token_file.secureFilePath)'
-#      goals: 'deploy'
-      goals: 'package azure-webapp:deploy'
+      goals: 'deploy'
