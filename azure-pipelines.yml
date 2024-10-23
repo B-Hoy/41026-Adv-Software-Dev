@@ -9,14 +9,13 @@ steps:
   name: secret_token_file
   inputs:
     secureFile: 'settings.xml'
-stages:
-- stage: 'Build'
-  displayName: 'Build app'
-  - task: Maven@4
-    inputs:
-      mavenPOMFile: 'pom.xml'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.17'
-      mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
-      options: '-s $(secret_token_file.secureFilePath)'
-      goals: 'deploy'
+
+- task: Maven@4
+  inputs:
+    mavenPOMFile: 'pom.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.17'
+    mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
+    options: '-s $(secret_token_file.secureFilePath)'
+    #goals: 'deploy'
+    goals: 'package azure-webapp:deploy'
