@@ -108,6 +108,19 @@ public class Database{
 		}
 		return null; // no such user
 	}
+	public User get_user(int id){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Users WHERE id = (?)");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new User(rs.getInt("id"), rs.getString("email"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("phone_number"), rs.getString("register_date"), rs.getString("card_num"), rs.getString("card_expiry_date"), rs.getInt("card_cvc"), rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return null; // no such user
+	}
 	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, int cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
 		try {
 			if (email == null || email.trim().isEmpty() || fname == null || fname.trim().isEmpty() || lname == null || lname.trim().isEmpty() || password == null || password.trim().isEmpty() || pnum == null || pnum.trim().isEmpty() || cardnum == null || cardnum.trim().isEmpty() || cardexp == null || cardexp.trim().isEmpty() || addrnum == null || addrnum.trim().isEmpty() || addst == null || addst.trim().isEmpty() || addrcity == null || addrcity.trim().isEmpty()){
@@ -368,26 +381,35 @@ public class Database{
 			System.out.println("ERROR: " + e.getMessage());
 		}
 	}
+	public void create_cart(int user_id){
+		try{
+			if (get_user(user_id) == null){
+				return;
+			}
+			PreparedStatement ps = db_con.prepareStatement("INSERT INTO Carts VALUES((?), (?), '', 0.0)");
+			ps.setInt(1, generate_id("Carts"));
+			ps.setInt(2, user_id);
+			ps.executeUpdate();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+	}
 	public void add_to_cart(int user_id, int item_id, int amount){
 		if (amount < 1){ // ez pz
 			return;
 		}
 		Cart user_cart = get_cart(user_id, "owner_id");
-		user_cart.add_item(item_id, amount);
 		try{
-			PreparedStatement ps;
 			if (user_cart == null){
-				ps = db_con.prepareStatement("INSERT INTO Carts VALUES((?), (?), (?), (?))");
-				ps.setInt(1, generate_id("Carts"));
-				ps.setInt(2, user_id);
-				ps.setString(3, user_cart.get_cart_item_string());
-				ps.setDouble(4, user_cart.get_price());
-			}else{
-				ps = db_con.prepareStatement("UPDATE Carts SET menu_items = (?), price = (?) WHERE owner_id = (?)");
-				ps.setString(1, user_cart.get_cart_item_string());
-				ps.setDouble(2, user_cart.get_price());
-				ps.setInt(3, user_id);
+				create_cart(user_id);
+				user_cart = get_cart(user_id, "owner_id");
 			}
+			user_cart.add_item(item_id, amount);
+			PreparedStatement ps;
+			ps = db_con.prepareStatement("UPDATE Carts SET menu_items = (?), price = (?) WHERE owner_id = (?)");
+			ps.setString(1, user_cart.get_cart_item_string());
+			ps.setDouble(2, user_cart.get_price());
+			ps.setInt(3, user_id);
 			ps.executeUpdate();
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
