@@ -1,6 +1,7 @@
 package uts.advsoft;
 
 import uts.advsoft.Database;
+import java.text.DecimalFormat;
 
 public class MenuItemEntry{
 	MenuItem item;
@@ -17,5 +18,13 @@ public class MenuItemEntry{
 	}
 	public void add_amount(int amount){
 		this.amount += amount;
+	}
+	public String get_value(){
+		if (amount > 0){
+			DecimalFormat df = new DecimalFormat("#.00");
+			return "$" + df.format(item.getPrice() * amount);
+		}else{
+			return "$0.00";
+		}
 	}
 }

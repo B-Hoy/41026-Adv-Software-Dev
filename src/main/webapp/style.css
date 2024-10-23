@@ -200,3 +200,23 @@ table, th, td {
   border-radius: 8px;
   cursor: pointer;
 }
+
+#modalButtonRemove {
+  bottom: 8;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #da4322;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#modalButtonDelete {
+  bottom: 8;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #ff1122;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}

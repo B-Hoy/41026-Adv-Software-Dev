@@ -1,8 +1,8 @@
-<%@ page import="java.util.List"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="uts.advsoft.MenuItem"%>
-<%@ page import="uts.advsoft.Database"%>
-<%@ page import="uts.advsoft.User"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="uts.advsoft.MenuItem"%>
+<%@page import="uts.advsoft.Database"%>
+<%@page import="uts.advsoft.User"%>
 <%@page import="uts.advsoft.MenuItemEntry"%>
 <%@page import="uts.advsoft.Cart"%>
 
@@ -13,7 +13,6 @@
         return;
     }
     Database db = (Database)application.getAttribute("database");
-    MenuItem[] menuItems = db.getMenuItems();   
 
     String userID = request.getParameter("userID");
     String itemID = request.getParameter("itemID");
@@ -24,10 +23,21 @@
         int itemIDInt = Integer.parseInt(itemID);
         int quantity = Integer.parseInt(quantityStr);
 
-        db.add_to_cart(userIDInt, itemIDInt, quantity);
-
-        System.out.println(itemID + " added to cart");
-    } 
+		if (quantity == 0){
+			db.remove_from_cart(userIDInt, itemIDInt);
+			System.out.println("Removed " + itemID);
+		}else{
+			db.remove_from_cart(userIDInt, itemIDInt, quantity);
+			System.out.println("Deleted " + quantityStr + " of " + itemID);
+		}
+        //System.out.println(itemID + " " + rem_or_delete ? "deleted" : ("removed " + quantityStr) + " from cart");
+    }
+	Cart user_cart = db.get_cart(user.get_id(), "owner_id");
+	if (user_cart == null){
+		db.create_cart(user.get_id());
+		user_cart = db.get_cart(user.get_id(), "owner_id");
+	}
+    MenuItemEntry[] menuItems = user_cart.get_cart_items();
 %>
 
 <!DOCTYPE html>
@@ -36,40 +46,40 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="style.css" type="text/css">
         
-        <title>Menu</title>
+        <title>Cart</title>
     </head>
     <body>
         <div class="menu">
-        <h1><b>Menu</b></h1>
-		<a href="cart.jsp"><h1>Cart</h1></a>
-
-        <div class="searchBar">
-            <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products...">
-        </div>
-        
-        <div class="menu-grid-container" id="menu">
+		<a href="menu.jsp"><h1>Menu</h1></a>
+        <h1><b>Cart<b></h1>
         <%
-            try {   
-                for (MenuItem i : menuItems) {
+			if (menuItems.length > 0){
+		%>
+        <div class="menu-grid-container" id="menu">
+		<%
+	            try {   
+    	            for (MenuItemEntry i : menuItems) {
         %>
 
-        <% String priceString = "$" + i.getPrice(); %>
-        <div class="menu-grid-item" onclick="openModal('<%= i.getName() %>', '<%= priceString %>', '<%= i.getDescription() %>', 'menuImages/<%= i.getImg() %>', '<%= i.getID() %>',)">
-            <img src="menuImages/<%= i.getImg() %>" alt="Pizza">
-            <div class="menu-grid-item-name"><%= i.getName() %></div>
-            <div class="menu-grid-item-price"><%= "$" + i.getPrice() %></div>
+        <% String priceString = "Amount: " + String.valueOf(i.get_amount()) + " Total: " + i.get_value(); %>
+        <div class="menu-grid-item" onclick="openModal('<%= i.get_item().getName() %>', '<%= priceString %>', '<%= i.get_item().getDescription() %>', 'menuImages/<%= i.get_item().getImg() %>', '<%= i.get_item().getID() %>',)">
+            <img src="menuImages/<%= i.get_item().getImg() %>" alt="Pizza">
+            <div class="menu-grid-item-name"><%= i.get_item().getName() %></div>
+            <div class="menu-grid-item-price"><%= priceString %></div>
         </div>
 
-        <%  
+        <%  		}
                 }
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+            	catch(Exception e){
+                	e.printStackTrace();
+	            }
         %>
         </div>   
+            <%}else{%>
+				<h1>Your cart is empty!</h1>
+			<%}%>
 
-    <a href="cart.jsp" class="button">Go to Cart</a>
+    <a href="checkout.jsp" class="button">Go to Checkout</a>
 
     <!-- Modal: A popup that will appear when clicking on an item which displays details about that item -->
     <!-- A single modal is used for all items, the details are changed via the openModal() function in the script below -->
@@ -81,30 +91,15 @@
                 <h2 id="modalName">Item Name</h2>
                 <p id="modalPrice">Item Price</p>
                 <p id="modalDescription">Item Description</p>
-				<input type="number" id="item_amount" min="1" placeholder="1"></input>
-                <button id="modalButton" onclick="addToCart('<%=user.get_id()%>', document.getElementById('item_amount').value)">Add to Cart</button>
+
+                <input type="number" id="item_amount" min="1" placeholder="1"></input>
+				<button id="modalButtonRemove" onclick="removeFromCart('<%=user.get_id()%>', document.getElementById('item_amount').value)">Remove Amount From Cart</button>
+                <button id="modalButtonDelete" onclick="removeFromCart('<%=user.get_id()%>', 0)">Remove All From Cart</button>
             </div>
         </div>
     </div>
 
     <script>
-        function searchMenu() {
-            var input, filter, menuItems;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            menuItems = document.querySelectorAll(".menu-grid-item");
-
-            menuItems.forEach(function(menuItem) {
-                var itemName = menuItem.querySelector(".menu-grid-item-name").textContent.toUpperCase();
-
-                if (itemName.indexOf(filter) > -1) {
-                    menuItem.style.display = "block";
-                } else {
-                    menuItem.style.display = "none"
-                }
-            });
-        }
-
         // Gets the details for the item that was clicked on, and updates the modal to display the details
         function openModal(name, price, description, image, id) {
             document.getElementById("modalName").textContent = name;
@@ -123,9 +118,9 @@
             }
         }
 
-        function addToCart(user, quan){
+        function removeFromCart(user, quan){
             var userID = user;
-            var quantity = quan;
+			var quantity = quan;
             var itemID = document.getElementById("itemModal").dataset.itemid;
 
             if (!itemID || !userID) {
