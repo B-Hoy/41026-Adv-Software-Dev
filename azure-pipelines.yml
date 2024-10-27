@@ -4,30 +4,31 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: DownloadSecureFile@1
-  name: secret_token_file
-  inputs:
-    secureFile: 'settings.xml'
-
-- task: Maven@4
-  inputs:
-    mavenPOMFile: 'pom.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.17'
-    mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
-    options: '-s $(secret_token_file.secureFilePath)'
-    goals: 'deploy'
-
 jobs:
-- deployment: VMDeploy
-  displayName: Deploy to VM
-  environment:
-   name: TheVM
-   resourceName: ADS-VM
-   resourceType: virtualMachine
-  strategy:
-     runOnce:
-        deploy:
-          steps:
-            - script: touch "hello"
+  - build:
+    steps:
+    - task: DownloadSecureFile@1
+      name: secret_token_file
+      inputs:
+        secureFile: 'settings.xml'
+
+    - task: Maven@4
+      inputs:
+        mavenPOMFile: 'pom.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.17'
+        mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
+        options: '-s $(secret_token_file.secureFilePath)'
+        goals: 'deploy'
+
+  - deployment: VMDeploy
+    displayName: Deploy to VM
+    environment:
+     name: TheVM
+     resourceName: ADS-VM
+     resourceType: virtualMachine
+    strategy:
+       runOnce:
+          deploy:
+            steps:
+              - script: touch "hello"
