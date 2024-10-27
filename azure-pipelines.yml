@@ -29,7 +29,7 @@ stages:
     - deployment: VMDeploy
       displayName: Deploy to VM
       environment: 
-        name: TheVM
+        name: ADS-VM
         resourceType: virtualMachine
         resourceName: ADS-VM
       strategy:
