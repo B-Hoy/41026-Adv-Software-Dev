@@ -20,10 +20,11 @@ steps:
     goals: 'deploy'
 
 - task: CopyFilesOverSSH@0
-  sshEndpoint: '20.167.43.89'
-  contents: 'release/devops-assignment.war'
-  targetFolder: '/var/lib/tomcat10/webapps/'
-  cleanTargetFolder: true
+  inputs:
+    sshEndpoint: '20.167.43.89'
+    contents: 'release/devops-assignment.war'
+    targetFolder: '/var/lib/tomcat10/webapps/'
+    cleanTargetFolder: true
 
 - task: SSH@0
   inputs:
