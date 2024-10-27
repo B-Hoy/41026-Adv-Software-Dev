@@ -24,7 +24,7 @@ steps:
     sshEndpoint: 'SSH-to-VM'
     contents: '**/*.war'
     targetFolder: '/var/lib/tomcat10/webapps/'
-    cleanTargetFolder: true
+    cleanTargetFolder: false
 
 - task: SSH@0
   inputs:
