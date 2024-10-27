@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 public class Order {
-    int id, owner_id, driver_id;
-    String delivery_method, order_date, status_level;
+    int id, owner_id, driver_id, address_postcode;
+    String delivery_method, order_date, status_level, address_street_num, address_street, address_city;
     boolean current_order;
     float order_price, delivery_fee;
     ArrayList<MenuItemEntry> menu_items;
 
     // Constructor including delivery fee parameter
-    public Order(int id, int owner_id, int driver_id, String menu_items, String delivery_method, String order_date, boolean current_order, String status_level, float order_price, float delivery_fee) {
+    public Order(int id, int owner_id, int driver_id, String menu_items, String delivery_method, String order_date, boolean current_order, String status_level, float order_price, float delivery_fee, String address_street_num, String address_street, String address_city, int address_postcode) {
         this.id = id;
         this.owner_id = owner_id;
         this.driver_id = driver_id;
@@ -24,7 +24,10 @@ public class Order {
         this.order_price = order_price;
         this.delivery_fee = delivery_fee;
         this.menu_items = new ArrayList<MenuItemEntry>();
-
+		this.address_street_num = address_street_num;
+		this.address_street = address_street;
+		this.address_city = address_city;
+		this.address_postcode = address_postcode;
         String[] items = menu_items.split("[,]");
         for (String i : items) {
             String[] j = i.split("[:]");

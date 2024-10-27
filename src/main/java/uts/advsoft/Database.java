@@ -43,8 +43,8 @@ public class Database{
 				"(21, 'rachel.young@internetmail.org', 'Rachel', 'Young', 'R@chelP@ss123', '+61440123456', DATETIME('now', '+10 hours'), '3530111111111115', '08/23', 888, '888', 'Willow St', 'Crestwood', 2466)"
 			);
 
-			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
-			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, 0, '1:1,2:2,3:3', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 93.94)");
+			s.executeUpdate("CREATE TABLE Orders(id INTEGER NOT NULL PRIMARY KEY, owner_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, menu_items TEXT NOT NULL, delivery_method TEXT NOT NULL, order_date TEXT NOT NULL, current_order BOOLEAN NOT NULL, status_level TEXT NOT NULL, order_price REAL NOT NULL, address_street_num TEXT NOT NULL, address_street TEXT NOT NULL, address_city TEXT NOT NULL, address_postcode INTEGER NOT NULL, FOREIGN KEY(owner_id) REFERENCES Users(id))");
+			s.executeUpdate("INSERT INTO ORDERS VALUES(1, 1, 0, '1:1,2:2,3:3', 'Walk', DATETIME('now', '+10 hours'), 1, 'Cooking', 93.94, 'PO Box 1', 'Test Street', 'Sydney', 2000)");
 
 			s.executeUpdate("CREATE TABLE MenuItems(id INTEGER NOT NULL PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL, image TEXT NOT NULL, description TEXT NOT NULL)");
 			s.executeUpdate("INSERT INTO MenuItems VALUES" + //
@@ -108,6 +108,19 @@ public class Database{
 		}
 		return null; // no such user
 	}
+	public User get_user(int id){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Users WHERE id = (?)");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				return new User(rs.getInt("id"), rs.getString("email"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("phone_number"), rs.getString("register_date"), rs.getString("card_num"), rs.getString("card_expiry_date"), rs.getInt("card_cvc"), rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode"));
+			}
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return null; // no such user
+	}
 	public void make_user(String email, String fname, String lname, String password, String pnum, String cardnum, String cardexp, int cardcvc, String addrnum, String addst, String addrcity, int addrpcode){
 		try {
 			if (email == null || email.trim().isEmpty() || fname == null || fname.trim().isEmpty() || lname == null || lname.trim().isEmpty() || password == null || password.trim().isEmpty() || pnum == null || pnum.trim().isEmpty() || cardnum == null || cardnum.trim().isEmpty() || cardexp == null || cardexp.trim().isEmpty() || addrnum == null || addrnum.trim().isEmpty() || addst == null || addst.trim().isEmpty() || addrcity == null || addrcity.trim().isEmpty()){
@@ -145,7 +158,7 @@ public class Database{
 			Statement s = db_con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT * FROM Orders");
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f, rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode")));
 			}
 			s.close();
 		}catch (Exception e){
@@ -160,7 +173,7 @@ public class Database{
 			ps.setInt(1, user_id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f, rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode")));
 			}
 			ps.close();
 		}catch (Exception e){
@@ -174,7 +187,7 @@ public class Database{
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
-				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f);
+				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f, rs.getString("address_street_num"), rs.getString("address_street"), rs.getString("address_city"), rs.getInt("address_postcode"));
 			}
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
@@ -335,11 +348,16 @@ public class Database{
 				return;
 			}
 			Cart user_cart = get_cart(user_id, "owner_id");
-			ps = db_con.prepareStatement("INSERT INTO Orders VALUES((?), (?), 0, (?), 'Walk', DATETIME('now', '+10 hours'), 1, 'Preparing', (?))"); 
+			ps = db_con.prepareStatement("INSERT INTO Orders VALUES((?), (?), 0, (?), 'Walk', DATETIME('now', '+10 hours'), 1, 'Preparing', (?), (?), (?), (?), (?))"); 
 			ps.setInt(1, generate_id("Orders"));
 			ps.setInt(2, user_id);
 			ps.setString(3, user_cart.get_cart_item_string());
 			ps.setDouble(4, user_cart.get_price());
+			User user = get_user(user_id);
+			ps.setString(5, user.get_address_street_num());
+			ps.setString(6, user.get_address_street());
+			ps.setString(7, user.get_address_city());
+			ps.setInt(8, user.get_address_postcode());
 			ps.executeUpdate();
 			delete_cart(user_id);
 		}catch (Exception e){
@@ -419,20 +437,15 @@ public class Database{
 
 	public void create_order(int user_id, Cart cart, double total_price, String delivery_method, String street_num, String street, String city, int postcode) {
 		try {
-			// Generate a unique order ID
-			int order_id = generate_id("Orders");
-	
 			// Prepare SQL to insert a new order
 			PreparedStatement ps = db_con.prepareStatement(
-				"INSERT INTO Orders (id, owner_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, street_num, street, city, postcode) " +
-				"VALUES (?, ?, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
+				"INSERT INTO Orders VALUES (?, ?, 0, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
 	
-			ps.setInt(1, order_id);
+			ps.setInt(1, generate_id("Orders"));
 			ps.setInt(2, user_id);
 			ps.setString(3, cart.get_cart_item_string());
 			ps.setString(4, delivery_method);
-			ps.setBoolean(5, true);  // Set as current order
-			ps.setDouble(6, total_price);
+			ps.setDouble(5, total_price);
 	
 			// Set address values
 			ps.setString(7, street_num);
