@@ -27,7 +27,7 @@
             } else {
                 String deliveryMethod = request.getParameter("deliveryOption") != null ? request.getParameter("deliveryOption") : "pickup";
                 double deliveryFee = "delivery".equals(deliveryMethod) ? 5.99 : 0.00;
-                double totalPrice = cart.calculateTotalPrice(deliveryFee); // Using the method from Cart.java
+                double totalPrice = cart.calculateTotalPrice(deliveryFee); 
     %>
 
     <!-- Display Order Summary -->
