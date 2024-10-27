@@ -31,7 +31,7 @@ stages:
       environment: 
         name: Test VM
         resourceType: virtualMachine
-        resourceName: Test VM
+        resourceName: ASD-VM
       strategy:
         runOnce:
           deploy:   
