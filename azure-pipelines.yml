@@ -17,5 +17,17 @@ steps:
     jdkVersionOption: '1.17'
     mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
     options: '-s $(secret_token_file.secureFilePath)'
-    #goals: 'deploy'
-    goals: 'package azure-webapp:deploy'
+    goals: 'deploy'
+
+jobs:
+- deployment: VMDeploy
+  displayName: Deploy to VM
+  environment:
+   name: TheVM
+   resourceName: ADS-VM
+   resourceType: virtualMachine
+  strategy:
+     runOnce:
+        deploy:
+          steps:
+            - script: touch "hello"
