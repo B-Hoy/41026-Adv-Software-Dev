@@ -4,36 +4,29 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-stages:
-- stage: BuildArtifact
-  displayName: Build JSP Artifact
-  jobs:
-  - job: Compile
-    steps:
-      - task: DownloadSecureFile@1
-        name: secret_token_file
-        inputs:
-          secureFile: 'settings.xml'
+steps:
+- task: DownloadSecureFile@1
+  name: secret_token_file
+  inputs:
+    secureFile: 'settings.xml'
 
-      - task: Maven@4
-        inputs:
-          mavenPOMFile: 'pom.xml'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.17'
-          mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
-          options: '-s $(secret_token_file.secureFilePath)'
-          goals: 'deploy'
+- task: Maven@4
+  inputs:
+    mavenPOMFile: 'pom.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.17'
+    mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
+    options: '-s $(secret_token_file.secureFilePath)'
+    goals: 'deploy'
 
-- stage: Deploy
-  jobs:
-    - deployment: VMDeploy
-      displayName: Deploy to VM
-      environment: 
-        name: dev
-        resourceType: virtualMachine
-        resourceName: ADS-VM
-      strategy:
-        runOnce:
-          deploy:   
-             steps:
-              - script: touch "hello"
+- task: CopyFilesOverSSH@0
+  sshEndpoint: '20.167.43.89'
+  contents: 'release/devops-assignment.war'
+  targetFolder: '/var/lib/tomcat10/webapps/'
+  cleanTargetFolder: true
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: '20.167.43.89'
+    runOptions: 'commands'
+    commands: 'sudo service tomcat10 restart'
