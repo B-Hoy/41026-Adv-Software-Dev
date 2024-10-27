@@ -418,34 +418,41 @@ public class Database{
 	}
 
 	public void create_order(int user_id, Cart cart, double total_price, String delivery_method, String street_num, String street, String city, int postcode) {
-        try {
-            // Generate a unique order ID
-            int order_id = generate_id("Orders");
-    
-            // Prepare SQL to insert a new order
-            PreparedStatement ps = db_con.prepareStatement(
-                "INSERT INTO Orders (id, owner_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, street_num, street, city, postcode) " +
-                "VALUES (?, ?, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
-    
-            ps.setInt(1, order_id);
-            ps.setInt(2, user_id);
-            ps.setString(3, cart.get_cart_item_string());
-            ps.setString(4, delivery_method);
-            ps.setBoolean(5, true);  // Set as current order
-            ps.setDouble(6, total_price);
-    
-            // Set address values
-            ps.setString(7, street_num);
-            ps.setString(8, street);
-            ps.setString(9, city);
-            ps.setInt(10, postcode);
-    
-            ps.executeUpdate();
-            ps.close();
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
-        }
-    }
+		try {
+			// Generate a unique order ID
+			int order_id = generate_id("Orders");
+	
+			// Prepare SQL to insert a new order
+			PreparedStatement ps = db_con.prepareStatement(
+				"INSERT INTO Orders (id, owner_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, street_num, street, city, postcode) " +
+				"VALUES (?, ?, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
+	
+			ps.setInt(1, order_id);
+			ps.setInt(2, user_id);
+			ps.setString(3, cart.get_cart_item_string());
+			ps.setString(4, delivery_method);
+			ps.setBoolean(5, true);  // Set as current order
+			ps.setDouble(6, total_price);
+	
+			// Set address values
+			ps.setString(7, street_num);
+			ps.setString(8, street);
+			ps.setString(9, city);
+			ps.setInt(10, postcode);
+	
+			// Execute the query and commit to database
+			int rowsInserted = ps.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("Order inserted successfully.");
+			} else {
+				System.out.println("Error: Order was not inserted.");
+			}
+	
+			ps.close();
+		} catch (Exception e) {
+			System.out.println("ERROR in create_order: " + e.getMessage());
+		}
+	}
 
 	
 }

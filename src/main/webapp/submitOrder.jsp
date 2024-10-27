@@ -10,5 +10,6 @@
         <h1>Your order has been received!</h1>
         
         <a href="landing.jsp" class="button">Order Again</a>
+        <a href="orderHistory.jsp" class="button">View Order History</a>
     </body>
 </html>

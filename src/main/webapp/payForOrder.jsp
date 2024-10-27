@@ -27,7 +27,7 @@
             } else {
                 String deliveryMethod = request.getParameter("deliveryOption") != null ? request.getParameter("deliveryOption") : "pickup";
                 double deliveryFee = "delivery".equals(deliveryMethod) ? 5.99 : 0.00;
-                double totalPrice = cart.get_price() + deliveryFee;
+                double totalPrice = cart.calculateTotalPrice(deliveryFee); // Using the method from Cart.java
     %>
 
     <!-- Display Order Summary -->
@@ -95,7 +95,7 @@
                             postcode = Integer.parseInt(request.getParameter("postcode"));
                         }
 
-                        // Add new order to the database
+                        // Add new order to the database, passing the totalPrice with the delivery fee included
                         db.create_order(user.get_id(), cart, totalPrice, deliveryMethod, streetNum, street, city, postcode);
 
                         // Redirect to submitOrder.jsp if successful

@@ -74,7 +74,6 @@ public class Order {
         }
     }
 
-    // New method to set the delivery fee based on delivery method
     public void setDeliveryFee(String deliveryMethod) {
         if ("delivery".equals(deliveryMethod)) {
             this.delivery_fee = 5.99f;
@@ -87,7 +86,6 @@ public class Order {
         return delivery_fee;
     }
 
-    // Method to calculate total price including delivery fee
     public float getTotalPrice() {
         return this.order_price + this.delivery_fee;
     }
@@ -95,6 +93,10 @@ public class Order {
     public String getTotalPriceFormatted() {
         DecimalFormat df = new DecimalFormat("#.00");
         return "$" + df.format(getTotalPrice());
+    }
+
+    public void setTotalPriceWithDelivery(float deliveryFee) {
+        this.order_price += deliveryFee;
     }
 
     // Setter methods
