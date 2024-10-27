@@ -31,3 +31,4 @@ steps:
     sshEndpoint: 'SSH-to-VM'
     runOptions: 'commands'
     commands: 'sudo service tomcat10 restart'
+
