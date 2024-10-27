@@ -29,9 +29,9 @@ stages:
     - deployment: VMDeploy
       displayName: Deploy to VM
       environment: 
-        name: ADS-VM
+        name: Test VM
         resourceType: virtualMachine
-        resourceName: ADS-VM
+        resourceName: Test VM
       strategy:
         runOnce:
           deploy:   
