@@ -26,6 +26,7 @@ steps:
     targetFolder: '/var/lib/tomcat10/webapps/'
     cleanTargetFolder: true
 
+
 - task: SSH@0
   inputs:
     sshEndpoint: '20.167.43.89'
