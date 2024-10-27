@@ -30,5 +30,5 @@ steps:
   inputs:
     sshEndpoint: 'SSH-to-VM'
     runOptions: 'commands'
-    commands: 'mv /var/lib/tomcat10/webapps/*.war /var/lib/tomcat10/webapps/devops-assignment.war && sudo service tomcat10 restart'
+    commands: 'mv /var/lib/tomcat10/webapps/target/*.war /var/lib/tomcat10/webapps/devops-assignment.war && sudo service tomcat10 restart'
 
