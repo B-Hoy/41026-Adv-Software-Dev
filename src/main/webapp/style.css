@@ -126,17 +126,6 @@ table, th, td {
   color: #333;
 }
 
-.sortButton{
-  width: 10%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  outline: none;
-  background-color: #f4f4f4;
-  color: #333;
-}
-
 .modal {
   display: none;
   position: fixed;
@@ -211,3 +200,44 @@ table, th, td {
   border-radius: 8px;
   cursor: pointer;
 }
+
+/* positions the dropdown content */
+.sortDropdown {
+  position: relative;
+  display: inline-block;
+  width: 10%;
+} 
+
+.sortButton{
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+}
+
+.sortDropdown-content {
+  display: none; /* hidden by default */
+  position: absolute;
+  background-color: #f4f4f4;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.sortDropdown-content a {
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+}
+
+.sortDropdown-content a:hover {background-color: #ddd;}
+
+.sortDropdown:hover .sortDropdown-content {display: block;}
+
+.sortDropdown:hover .sortButton {background-color: #d7d7d7;}
