@@ -22,6 +22,7 @@
     String quantityStr = request.getParameter("quantity");
 
     if (userID != null && itemID != null && quantityStr != null) {
+        System.out.print("this is running");
         int userIDInt = Integer.parseInt(userID);
         int itemIDInt = Integer.parseInt(itemID);
         int quantity = Integer.parseInt(quantityStr);
@@ -32,7 +33,6 @@
     } 
 
     String sortType = (request.getParameter("sortType")==null) ? "az" : request.getParameter("sortType");
-    System.out.print(sortType);
     if (sortType.equals("az")){
         //sort by name a-z
         Arrays.sort(menuItems, new Comparator<MenuItem>() {
@@ -181,7 +181,7 @@
                 return;
             }
             
-            var form = document.createElement('addToCartForm');
+            var form = document.createElement('form');
             form.method = 'POST';
             form.action = '';  // This form submits to the current page
 
@@ -210,18 +210,18 @@
         function sortMenu(sort){
             var sortType = sort;
 
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '';  // This form submits to the current page
+            var sortForm = document.createElement('form');
+            sortForm.method = 'POST';
+            sortForm.action = '';  // This form submits to the current page
 
             var sortTypeInput = document.createElement('input');
             sortTypeInput.type = 'hidden';
             sortTypeInput.name = 'sortType';
             sortTypeInput.value = sortType;
-            form.appendChild(sortTypeInput);
+            sortForm.appendChild(sortTypeInput);
 
-            document.body.appendChild(form);
-            form.submit();  // Submit the form
+            document.body.appendChild(sortForm);
+            sortForm.submit();  // Submit the form
         }
 
     </script>
