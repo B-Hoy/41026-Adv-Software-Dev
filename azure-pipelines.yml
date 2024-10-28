@@ -18,3 +18,17 @@ steps:
     mavenOptions: '-Xmx1024m -Drevision=$(Build.BuildNumber)'
     options: '-s $(secret_token_file.secureFilePath)'
     goals: 'deploy'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'SSH-to-VM'
+    contents: '**/*.war'
+    targetFolder: '/var/lib/tomcat10/webapps/'
+    cleanTargetFolder: false
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'SSH-to-VM'
+    runOptions: 'commands'
+    commands: 'mv /var/lib/tomcat10/webapps/target/*.war /var/lib/tomcat10/webapps/devops-assignment.war && sudo service tomcat10 restart'
+
