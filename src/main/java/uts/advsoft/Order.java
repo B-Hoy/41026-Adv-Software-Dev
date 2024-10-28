@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 public class Order {
-    int id, owner_id, driver_id, address_postcode;
-    String delivery_method, order_date, status_level, address_street_num, address_street, address_city;
+    int id, owner_id, driver_id;
+    String delivery_method, order_date, status_level;
     boolean current_order;
     float order_price, delivery_fee;
     ArrayList<MenuItemEntry> menu_items;
 
     // Constructor including delivery fee parameter
-    public Order(int id, int owner_id, int driver_id, String menu_items, String delivery_method, String order_date, boolean current_order, String status_level, float order_price, float delivery_fee, String address_street_num, String address_street, String address_city, int address_postcode) {
+    public Order(int id, int owner_id, int driver_id, String menu_items, String delivery_method, String order_date, boolean current_order, String status_level, float order_price, float delivery_fee) {
         this.id = id;
         this.owner_id = owner_id;
         this.driver_id = driver_id;
@@ -24,10 +24,7 @@ public class Order {
         this.order_price = order_price;
         this.delivery_fee = delivery_fee;
         this.menu_items = new ArrayList<MenuItemEntry>();
-		this.address_street_num = address_street_num;
-		this.address_street = address_street;
-		this.address_city = address_city;
-		this.address_postcode = address_postcode;
+
         String[] items = menu_items.split("[,]");
         for (String i : items) {
             String[] j = i.split("[:]");
@@ -77,6 +74,7 @@ public class Order {
         }
     }
 
+    // New method to set the delivery fee based on delivery method
     public void setDeliveryFee(String deliveryMethod) {
         if ("delivery".equals(deliveryMethod)) {
             this.delivery_fee = 5.99f;
@@ -89,6 +87,7 @@ public class Order {
         return delivery_fee;
     }
 
+    // Method to calculate total price including delivery fee
     public float getTotalPrice() {
         return this.order_price + this.delivery_fee;
     }
@@ -96,10 +95,6 @@ public class Order {
     public String getTotalPriceFormatted() {
         DecimalFormat df = new DecimalFormat("#.00");
         return "$" + df.format(getTotalPrice());
-    }
-
-    public void setTotalPriceWithDelivery(float deliveryFee) {
-        this.order_price += deliveryFee;
     }
 
     // Setter methods
