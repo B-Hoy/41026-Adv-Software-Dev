@@ -22,10 +22,8 @@
     String addressCity = request.getParameter("address_city");
     int addressPostcode = Integer.parseInt(request.getParameter("address_postcode"));
     
-    // Insert new user into the database
     db.make_user(email, firstName, lastName, password, phoneNumber, cardNum, cardExpiry, cardCvv, addressStreetNum, addressStreet, addressCity, addressPostcode);
     
-    // Retrieve the newly created user to display on the profile page
     User newUser = db.get_user(email, password);
     
     session.setAttribute("user", newUser);

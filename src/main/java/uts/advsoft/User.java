@@ -61,4 +61,47 @@ public class User{
 	public int get_address_postcode(){
 		return address_postcode;
 	}
+
+
+	
+
+	public void set_email(String email){
+		this.email = email; 
+	}
+    public void set_first_name(String first_name){
+		this.first_name = first_name; 
+	}
+    public void set_last_name(String last_name){ 
+		this.last_name = last_name; 
+	}
+    public void set_password(String password){ 
+		this.password = password; 
+	}
+    public void set_phone_num(String phone_num){ 
+		this.phone_num = phone_num; 
+	}
+    public void set_card_num(String card_num) { 
+		this.card_num = card_num; 
+	}
+    public void set_card_expiry_date(String card_expiry_date) { 
+		this.card_expiry_date = card_expiry_date; 
+	}
+    public void set_card_cvc(int card_cvc) { 
+		this.card_cvc = card_cvc; 
+	}
+    public void set_address_street_num(String address_street_num) { 
+		this.address_street_num = address_street_num; 
+	}
+    public void set_address_street(String address_street) { 
+		this.address_street = address_street; 
+	}
+    public void set_address_city(String address_city) {
+		this.address_city = address_city;
+	}
+    public void set_address_postcode(int address_postcode){
+		this.address_postcode = address_postcode;
+	}
+
+
+
 }
