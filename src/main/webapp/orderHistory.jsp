@@ -34,7 +34,7 @@
             <a href="logout.jsp" style="float:right;">Logout</a>
         </div>
 
-        <p><strong>Below are previously made orders</strong></p>
+        <p><strong>Below are current orders</strong></p>
 
         <table class="order-table">
             <thead>
@@ -62,7 +62,91 @@
             // Only display orders that belong to the logged-in user
             for (int i = 0; i < orders.length; i++) {
                 // Check if the order belongs to the current user
-                if (orders[i].get_owner_id() == currentUser.get_id()) {
+                if (orders[i].get_owner_id() == currentUser.get_id() && !orders[i].get_status_level().equals("Finished")) {
+                    Employee cur_driver = db.get_employee(orders[i].get_driver_id());
+                    MenuItemEntry[] items = orders[i].get_menu_items();
+            %>
+        
+            <form method="post">
+                <input type="hidden" id="form" name="form" value="update_order">
+                <input type="hidden" id="order_id" name="order_id" value="<%= orders[i].get_id() %>">
+                <tr>
+                    <td><%= orders[i].get_id() %></td>
+                    <td><%= orders[i].get_owner_id() %></td>
+                    <td>
+                        <table class="admin-table">
+                            <thead>
+                                <th>Item Name</th>
+                                <th>Amount</th>
+                            </thead>
+                            <% for (int j = 0; j < items.length; j++) { %>
+                            <tr>
+                                <td><%= items[j].get_item().getName() %></td>
+                                <td><%= items[j].get_amount() %></td>
+                            </tr>
+                            <% } %>
+                        </table>
+                    </td>
+                    <td>
+                        <% if (orders[i].get_status_level().equals("Finished")) { %>
+                        <%= orders[i].get_delivery_method() %>
+                        <% } else { %>
+                            <%= orders[i].get_delivery_method() %>
+                        <% } %>
+                    </td>
+                    <td>
+                        <% if (orders[i].get_status_level().equals("Finished")) { %>
+                        <%= cur_driver != null ? cur_driver.toString() : "" %>
+                        <% } else { %>
+                            <%= cur_driver != null ? cur_driver.get_id() : 0 %>
+                        <% } %>
+                    </td>
+                    <td><%= orders[i].get_order_date() %></td>
+                    <td><%= orders[i].is_current_order() %></td>
+                    <td>
+                        <% if (orders[i].get_status_level().equals("Finished")) { %>
+                        <%= orders[i].get_status_level() %>
+                        <input type="hidden" id="order_status" name="order_status" value="Finished">
+                        <% } else { %>
+                            <%= orders[i].get_status_level() %>
+                        <% } %>
+                    </td>
+                    <td><%= orders[i].get_order_price() %></td>
+                </tr>
+            </form>
+        
+            <%
+                }
+            }
+            %>
+        </table>
+
+
+        <p><strong>Below are previously made orders</strong></p>
+
+        <table class="order-table">
+            <thead>
+                <th colspan="99">
+                    <b>Orders</b>
+                </th>
+            </thead>
+            <thead>
+                <th>ID</th>
+                <th>Owner ID</th>
+                <th>Menu Items</th>
+                <th>Delivery Method</th>
+                <th>Current Driver</th>
+                <th>Order Date</th>
+                <th>Is Current Order?</th>
+                <th>Status Level</th>
+                <th>Order Price</th>
+            </thead>
+        
+            <%
+            // Only display orders that belong to the logged-in user
+            for (int i = 0; i < orders.length; i++) {
+                // Check if the order belongs to the current user
+                if (orders[i].get_owner_id() == currentUser.get_id() && orders[i].get_status_level().equals("Finished")) {
                     Employee cur_driver = db.get_employee(orders[i].get_driver_id());
                     MenuItemEntry[] items = orders[i].get_menu_items();
             %>
@@ -133,7 +217,6 @@
                         <% } %>
                     </td>
                     <td><%= orders[i].get_order_price() %></td>
-                    <td><input type="submit" value="Submit"></td>
                 </tr>
             </form>
         
@@ -142,6 +225,9 @@
             }
             %>
         </table>
+
+
+
         
     </body>
 </html>
