@@ -43,7 +43,6 @@ class DatabaseTest{
 		assertTrue(orders.length > 0);
 		assertEquals(orders[0].get_id(), 1);
 		assertEquals(orders[0].get_owner_id(), 1);
-		//assertEquals(orders[0].get_menu_items(), );
 		MenuItemEntry[] mie = orders[0].get_menu_items();
 		assertTrue(mie.length == 3);
 		assertEquals(orders[0].get_delivery_method(), "Walk");
