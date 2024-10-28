@@ -85,12 +85,6 @@
             <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products...">
             <div class="sortDropdown">
                 <button class="sortButton">Sort...</button>
-                <% 
-                    String az = "az";
-                    String za = "za";
-                    String hl = "hl";
-                    String lh = "lh";
-                %>
                 <div class="sortDropdown-content">
                     <a onclick="sortMenu('az')">Name (A-Z)</a>
                     <a onclick="sortMenu('za')">Name (Z-A)</a>
