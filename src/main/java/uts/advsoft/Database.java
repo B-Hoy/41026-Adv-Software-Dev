@@ -139,13 +139,35 @@ public class Database{
 			System.out.println("ERROR: " + e.getMessage());
 		}
 	}
+	public void update_user(User user){
+		try{
+			PreparedStatement ps = db_con.prepareStatement("UPDATE Users SET email = (?), first_name = (?), last_name = (?), password = (?), phone_number = (?), register_date = (?), card_num = (?), card_expiry_date = (?), card_cvc = (?), address_street_num = (?), address_street = (?), address_city = (?), address_postcode = (?) WHERE id = (?)");
+			ps.setString(1, user.get_email());
+			ps.setString(2, user.get_first_name());
+			ps.setString(3, user.get_last_name());
+			ps.setString(4, user.get_password());
+			ps.setString(5, user.get_phone_num());
+			ps.setString(6, user.get_register_date());
+			ps.setString(7, user.get_card_num());
+			ps.setString(8, user.get_card_expiry_date());
+			ps.setInt(9, user.get_card_cvc());
+			ps.setString(10, user.get_address_street_num());
+			ps.setString(11, user.get_address_street());
+			ps.setString(11, user.get_address_city());
+			ps.setInt(12, user.get_address_postcode());
+			ps.executeUpdate();
+
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+	}
 	public Order[] get_all_orders(){
 		ArrayList<Order> a = new ArrayList<Order>();
 		try{
 			Statement s = db_con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT * FROM Orders");
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
 			}
 			s.close();
 		}catch (Exception e){
@@ -160,7 +182,7 @@ public class Database{
 			ps.setInt(1, user_id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()){
-				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price")));
+				a.add(new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f));
 			}
 			ps.close();
 		}catch (Exception e){
@@ -174,7 +196,7 @@ public class Database{
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
-				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"));
+				return new Order(rs.getInt("id"), rs.getInt("owner_id"), rs.getInt("driver_id"), rs.getString("menu_items"), rs.getString("delivery_method"), rs.getString("order_date"), rs.getBoolean("current_order"), rs.getString("status_level"), rs.getFloat("order_price"), 0.0f);
 			}
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
