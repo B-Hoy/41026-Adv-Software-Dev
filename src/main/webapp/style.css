@@ -116,7 +116,18 @@ table, th, td {
 }
 
 .searchInput{
-  width: 100%;
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.sortButton{
+  width: 10%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;

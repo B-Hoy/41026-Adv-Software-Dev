@@ -44,6 +44,7 @@
 
         <div class="searchBar">
             <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products...">
+            <button class="sortButton">Sort...</button>
         </div>
         
         <div class="menu-grid-container" id="menu">
@@ -88,20 +89,25 @@
 
     <script>
         function searchMenu() {
-            var input, filter, menuItems;
+            var input, searchTerm, menuItems;
             input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
+            searchTerm = input.value.toUpperCase();
+            //changed variable name from 'filter' to 'searchTerm' as it's a more accurate name
             menuItems = document.querySelectorAll(".menu-grid-item");
 
             menuItems.forEach(function(menuItem) {
                 var itemName = menuItem.querySelector(".menu-grid-item-name").textContent.toUpperCase();
 
-                if (itemName.indexOf(filter) > -1) {
+                if (itemName.indexOf(searchTerm) > -1) {
                     menuItem.style.display = "block";
                 } else {
                     menuItem.style.display = "none"
                 }
             });
+        }
+
+        function sortMenu() {
+            
         }
 
         // Gets the details for the item that was clicked on, and updates the modal to display the details
