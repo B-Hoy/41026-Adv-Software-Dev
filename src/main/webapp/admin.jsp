@@ -58,10 +58,14 @@
 			Cart[] carts = db.get_all_carts();
 			MenuItem[] m_items = db.getMenuItems();
 		%>
+
+		<div class="admin">
+		<h1>Admin</h1>
+
 		<table class="admin-table">
 			<thead>
 				<th colspan="14">
-					<b>Users</b>
+					<h2>Customers</h2>
 				</th>
 			</thead>
 			<thead>
@@ -69,16 +73,17 @@
 				<th>Email</th>
 				<th>First Name</th>
 				<th>Last Name</th>
-				<th>Password</th>
+				<!--<th>Password</th>-->
 				<th>Phone Number</th>
 				<th>Register Date</th>
-				<th>Card Number</th>
+				<!--<th>Card Number</th>
 				<th>Card Expiry</th>
-				<th>Card CVC</th>
+				<th>Card CVC</th>-->
 				<th>Address Street Number</th>
 				<th>Address Street</th>
 				<th>Address City</th>
 				<th>Address Postcode</th>
+				<th>Order History</th>
 			</thead>
 			<% for (int i = 0; i < users.length; i++){%>
 			<tr>
@@ -86,16 +91,23 @@
 				<td><%=users[i].get_email()%></td>
 				<td><%=users[i].get_first_name()%></td>
 				<td><%=users[i].get_last_name()%></td>
-				<td><%=users[i].get_password()%></td>
+				<!--<td><%=users[i].get_password()%></td>-->
 				<td><%=users[i].get_phone_num()%></td>
 				<td><%=users[i].get_register_date()%></td>
-				<td><%=users[i].get_card_num()%></td>
+				<!--<td><%=users[i].get_card_num()%></td>
 				<td><%=users[i].get_card_expiry_date()%></td>
-				<td><%=users[i].get_card_cvc()%></td>
+				<td><%=users[i].get_card_cvc()%></td>-->
 				<td><%=users[i].get_address_street_num()%></td>
 				<td><%=users[i].get_address_street()%></td>
 				<td><%=users[i].get_address_city()%></td>
 				<td><%=users[i].get_address_postcode()%></td>
+				<td>
+					<form method="post" action="adminOrderHistory.jsp">
+					<input type="hidden" name="username" value="<%= users[i].get_email() %>">
+					<input type="hidden" name="password" value="<%= users[i].get_password() %>">
+					<input type="submit" class="seeHistoryButton" value="See history">
+					</form>
+				</td>
 			</tr>
 			<%}%>
 		</table>
@@ -292,6 +304,7 @@
 					<%}%>
 				</tbody>
 			</table>
+		</div>
 	</body>
 	<%}%>
 </html>
