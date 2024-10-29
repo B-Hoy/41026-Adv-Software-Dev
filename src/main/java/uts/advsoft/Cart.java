@@ -68,6 +68,9 @@ public class Cart{
 			return "$0.00";
 		}
 	}
+	public double calculateTotalPrice(double deliveryFee) {
+        return this.cart_price + deliveryFee;
+    }
 	public void add_item(int item_id, int amount){
 		MenuItemEntry curr;
 		for (int i = 0; i < this.item_list.size(); i++){

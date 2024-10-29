@@ -18,9 +18,11 @@
             const totalPriceElement = document.getElementById("totalPrice");
             const hiddenDeliveryFee = document.getElementById("hiddenDeliveryFee");
 
+            const subtotal = parseFloat(document.getElementById("subtotal").innerText.replace('$', ''));
+
             // Define the delivery fee
             const deliveryFee = 5.99;
-            const subtotal = parseFloat(cart.get_price());
+
 
             let finalDeliveryFee = 0;
 
@@ -49,21 +51,33 @@
         });
     </script>
 </head>
+
 <body>
     <h1>Checkout</h1>
 
     <%
-        Database db = (Database) application.getAttribute("database");
-        User user = db.get_user("testing@test.com", "testpasswd");
+        // Fetch current user from session
+        User user = (User) session.getAttribute("user");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
-            Cart cart = db.get_cart(1, "id");
+            // Fetch the database and the user's cart
+            Database db = (Database) application.getAttribute("database");
+            Cart cart = db.get_cart(user.get_id(), "owner_id");
 
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
             } else {
                 MenuItemEntry[] cartItems = cart.get_cart_items();
+                
+                // Fetch delivery option and calculate the total price on the server side
+                double deliveryFee = 0.00;
+                if (request.getParameter("deliveryOption") != null && request.getParameter("deliveryOption").equals("delivery")) {
+                    deliveryFee = 5.99; // Set the delivery fee
+                }
+
+                // Calculate total price using the method from Cart.java
+                double totalPrice = cart.calculateTotalPrice(deliveryFee);
     %>
 
     <form action="payForOrder.jsp" method="post">
@@ -129,7 +143,7 @@
         <table>
             <tr>
                 <td>Subtotal</td>
-                <td>$<%= String.format("%.2f", cart.get_price()) %></td>
+                <td id="subtotal">$<%= String.format("%.2f", cart.get_price()) %></td>
             </tr>
             <tr>
                 <td>Delivery Fee</td>
@@ -137,7 +151,7 @@
             </tr>
             <tr>
                 <td>Total Price</td>
-                <td id="totalPrice">$<%= String.format("%.2f", cart.get_price()) %></td>
+                <td id="totalPrice">$<%= String.format("%.2f", totalPrice) %></td>
             </tr>
         </table>
 
