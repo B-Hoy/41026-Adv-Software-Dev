@@ -129,7 +129,7 @@
                 <h2 id="modalName">Item Name</h2>
                 <p id="modalPrice">Item Price</p>
                 <p id="modalDescription">Item Description</p>
-				<input type="number" id="item_amount" min="1" placeholder="1"></input>
+				<input type="number" id="item_amount" min="1" value="1"></input>
                 <button id="modalButton" onclick="addToCart('<%=user.get_id()%>', document.getElementById('item_amount').value)">Add to Cart</button>
             </div>
         </div>
