@@ -15,7 +15,7 @@
     <h1>Payment Details</h1>
 
     <%
-
+//
         Database db = (Database) application.getAttribute("database");
         User user = (User) session.getAttribute("user");
         if (user == null) {
