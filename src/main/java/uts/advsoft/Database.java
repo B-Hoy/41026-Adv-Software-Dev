@@ -483,7 +483,7 @@ public class Database{
     
             // Prepare SQL to insert a new order
             PreparedStatement ps = db_con.prepareStatement(
-                "INSERT INTO Orders (id, owner_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, street_num, street, city, addess_postcode) " +
+                "INSERT INTO Orders (id, owner_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, street_num, street, city, postcode) " +
                 "VALUES (?, ?, ?, ?, DATETIME('now', '+11 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
     
             ps.setInt(1, order_id);
