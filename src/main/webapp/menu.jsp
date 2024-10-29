@@ -1,5 +1,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.Comparator"%>
 <%@ page import="uts.advsoft.MenuItem"%>
 <%@ page import="uts.advsoft.Database"%>
 <%@ page import="uts.advsoft.User"%>
@@ -13,13 +15,14 @@
         return;
     }
     Database db = (Database)application.getAttribute("database");
-    MenuItem[] menuItems = db.getMenuItems();   
+    MenuItem[] menuItems = db.getMenuItems(); 
 
     String userID = request.getParameter("userID");
     String itemID = request.getParameter("itemID");
     String quantityStr = request.getParameter("quantity");
 
     if (userID != null && itemID != null && quantityStr != null) {
+        System.out.print("this is running");
         int userIDInt = Integer.parseInt(userID);
         int itemIDInt = Integer.parseInt(itemID);
         int quantity = Integer.parseInt(quantityStr);
@@ -28,6 +31,42 @@
 
         System.out.println(itemID + " added to cart");
     } 
+
+    String sortType = (request.getParameter("sortType")==null) ? "az" : request.getParameter("sortType");
+    if (sortType.equals("az")){
+        //sort by name a-z
+        Arrays.sort(menuItems, new Comparator<MenuItem>() {
+            @Override
+            public int compare(MenuItem item1, MenuItem item2) {
+                return item1.getName().compareTo(item2.getName());
+            }
+        });
+    } else if (sortType.equals("za")){
+        //sort by name z-a
+        Arrays.sort(menuItems, new Comparator<MenuItem>() {
+            @Override
+            public int compare(MenuItem item1, MenuItem item2) {
+                return item2.getName().compareTo(item1.getName());
+            }
+        });
+    } else if (sortType.equals("hl")){
+        //sort by price high-low
+        Arrays.sort(menuItems, new Comparator<MenuItem>() {
+            @Override
+            public int compare(MenuItem item1, MenuItem item2) {
+                return Double.compare(item2.getPrice(), item1.getPrice());
+            }
+        });
+    } else if (sortType.equals("lh")){
+        //sort by price low-high
+        Arrays.sort(menuItems, new Comparator<MenuItem>() {
+            @Override
+            public int compare(MenuItem item1, MenuItem item2) {
+                return Double.compare(item1.getPrice(), item2.getPrice());
+            }
+        });
+    }
+    
 %>
 
 <!DOCTYPE html>
@@ -45,6 +84,15 @@
 
         <div class="searchBar">
             <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products...">
+            <div class="sortDropdown">
+                <button class="sortButton">Sort...</button>
+                <div class="sortDropdown-content">
+                    <a onclick="sortMenu('az')">Name (A-Z)</a>
+                    <a onclick="sortMenu('za')">Name (Z-A)</a>
+                    <a onclick="sortMenu('hl')">Price (High-Low)</a>
+                    <a onclick="sortMenu('lh')">Price (Low-High)</a>
+                </div>
+            </div>
         </div>
         
         <div class="menu-grid-container" id="menu">
@@ -89,15 +137,16 @@
 
     <script>
         function searchMenu() {
-            var input, filter, menuItems;
+            var input, searchTerm, menuItems;
             input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
+            searchTerm = input.value.toUpperCase();
+            //changed variable name from 'filter' to 'searchTerm' as it's a more accurate name
             menuItems = document.querySelectorAll(".menu-grid-item");
 
             menuItems.forEach(function(menuItem) {
                 var itemName = menuItem.querySelector(".menu-grid-item-name").textContent.toUpperCase();
 
-                if (itemName.indexOf(filter) > -1) {
+                if (itemName.indexOf(searchTerm) > -1) {
                     menuItem.style.display = "block";
                 } else {
                     menuItem.style.display = "none"
@@ -158,6 +207,24 @@
             document.body.appendChild(form);
             form.submit();  // Submit the form
         }
+
+        function sortMenu(sort){
+            var sortType = sort;
+
+            var sortForm = document.createElement('form');
+            sortForm.method = 'POST';
+            sortForm.action = '';  // This form submits to the current page
+
+            var sortTypeInput = document.createElement('input');
+            sortTypeInput.type = 'hidden';
+            sortTypeInput.name = 'sortType';
+            sortTypeInput.value = sortType;
+            sortForm.appendChild(sortTypeInput);
+
+            document.body.appendChild(sortForm);
+            sortForm.submit();  // Submit the form
+        }
+
     </script>
     
     </body>
