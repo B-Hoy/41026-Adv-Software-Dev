@@ -63,46 +63,68 @@
         <input type="text" id="cvc" name="cvc" pattern="[0-9]{3}" required><br>
 
         <%
-            // Check for form submission and validate payment details
-            if (request.getMethod().equalsIgnoreCase("POST")) {
-                String enteredCardName = request.getParameter("cardName");
-                String enteredCardNumber = request.getParameter("cardNumber");
-                String enteredExpiryDate = request.getParameter("expiryDate");
-                String enteredCvc = request.getParameter("cvc");
+        // Check for form submission and validate payment details
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            String enteredCardName = request.getParameter("cardName");
+            String enteredCardNumber = request.getParameter("cardNumber");
+            String enteredExpiryDate = request.getParameter("expiryDate");
+            String enteredCvc = request.getParameter("cvc");
 
-                // Check if any of the parameters are null
-                if (enteredCardName == null || enteredCardNumber == null || enteredExpiryDate == null || enteredCvc == null) {
-                    out.println("<p style='color: red;'>Please fill in all payment details.</p>");
+            // Check if any of the parameters are null
+            if (enteredCardName == null || enteredCardNumber == null || enteredExpiryDate == null || enteredCvc == null) {
+                out.println("<p style='color: red;'>Please fill in all payment details.</p>");
+            } else {
+                // Validate user data
+                if (!enteredCardName.equalsIgnoreCase(user.get_first_name() + " " + user.get_last_name()) ||
+                    !enteredCardNumber.equals(user.get_card_num()) ||
+                    !enteredExpiryDate.equals(user.get_card_expiry_date()) ||
+                    !enteredCvc.equals(String.valueOf(user.get_card_cvc()))) {
+                    out.println("<p style='color: red;'>Incorrect payment details! Please try again.</p>");
                 } else {
-                    // Validate user data
-                    if (!enteredCardName.equalsIgnoreCase(user.get_first_name() + " " + user.get_last_name()) ||
-                        !enteredCardNumber.equals(user.get_card_num()) ||
-                        !enteredExpiryDate.equals(user.get_card_expiry_date()) ||
-                        !enteredCvc.equals(String.valueOf(user.get_card_cvc()))) {
-                        out.println("<p style='color: red;'>Incorrect payment details! Please try again.</p>");
-                    } else {
-                        // Address variables for the order
-                        String streetNum = user.get_address_street_num();
-                        String street = user.get_address_street();
-                        String city = user.get_address_city();
-                        int postcode = user.get_address_postcode();
+                    // Address variables for the order
+                    String streetNum = user.get_address_street_num();
+                    String street = user.get_address_street();
+                    String city = user.get_address_city();
+                    int postcode = user.get_address_postcode();
 
-                        // If delivery is chosen and the address was updated, get the new values
-                        if ("delivery".equals(deliveryMethod)) {
-                            streetNum = request.getParameter("streetNumber");
-                            street = request.getParameter("streetAddress");
-                            city = request.getParameter("city");
-                            postcode = Integer.parseInt(request.getParameter("postcode"));
+                    // If delivery is chosen and the address was updated, get the new values
+                    if ("delivery".equals(deliveryMethod)) {
+                        streetNum = request.getParameter("streetNumber");
+                        street = request.getParameter("streetAddress");
+                        city = request.getParameter("city");
+                        
+                        // Parse and validate postcode
+                        String postcodeStr = request.getParameter("postcode");
+                        if (postcodeStr != null && !postcodeStr.trim().isEmpty()) {
+                            try {
+                                postcode = Integer.parseInt(postcodeStr);
+                            } catch (NumberFormatException e) {
+                                out.println("<p style='color: red;'>Invalid postcode. Please enter a valid number.</p>");
+                                return; // Stop processing if postcode is invalid
+                            }
+                        } else {
+                            out.println("<p style='color: red;'>Please enter all delivery address fields.</p>");
+                            return;
                         }
 
-                        // Add new order to the database, passing the totalPrice with the delivery fee included
-                        db.create_order(user.get_id(), cart, totalPrice, deliveryMethod, streetNum, street, city, postcode);
-
-                        // Redirect to submitOrder.jsp if successful
-                        response.sendRedirect("submitOrder.jsp");
+                        // Ensure none of the address fields are null or empty for delivery
+                        if (streetNum == null || streetNum.trim().isEmpty() ||
+                            street == null || street.trim().isEmpty() ||
+                            city == null || city.trim().isEmpty()) {
+                            out.println("<p style='color: red;'>Please enter all delivery address fields.</p>");
+                            return;
+                        }
                     }
+
+                    // Add new order to the database, passing the totalPrice with the delivery fee included
+                    db.create_order(user.get_id(), cart, totalPrice, deliveryMethod, streetNum, street, city, postcode);
+
+                    // Redirect to submitOrder.jsp if successful
+                    response.sendRedirect("submitOrder.jsp");
+                    return; // Ensure no further code is processed after redirect
                 }
             }
+        }
         %>
 
         <br>

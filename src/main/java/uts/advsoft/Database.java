@@ -457,26 +457,26 @@ public class Database{
 		}
 	}
 
-	public void create_order(int user_id, Cart cart, double total_price, String delivery_method, String street_num, String street, String city, int postcode) {
+	public void create_order(int user_id, Cart cart, double total_price, String delivery_method, String street_num, String street, String city, int address_postcode) {
 		try {
+			// Prepare SQL to insert a new order
 			PreparedStatement ps = db_con.prepareStatement(
 				"INSERT INTO Orders (id, owner_id, driver_id, menu_items, delivery_method, order_date, current_order, status_level, order_price, address_street_num, address_street, address_city, address_postcode) " +
-				"VALUES (?, ?, 0, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)"
-			);
+				"VALUES (?, ?, 0, ?, ?, DATETIME('now', '+10 hours'), ?, 'Processing', ?, ?, ?, ?, ?)");
 	
+			// Set the parameters
 			ps.setInt(1, generate_id("Orders"));
 			ps.setInt(2, user_id);
 			ps.setString(3, cart.get_cart_item_string());
 			ps.setString(4, delivery_method);
-			ps.setBoolean(5, true);  // current_order = true
-			ps.setDouble(6, total_price); // Set order_price
-	
-			// Set address details
+			ps.setBoolean(5, true); // Setting current_order as active
+			ps.setDouble(6, total_price);
 			ps.setString(7, street_num);
 			ps.setString(8, street);
 			ps.setString(9, city);
-			ps.setInt(10, postcode);
+			ps.setInt(10, address_postcode);
 	
+			// Execute the query
 			int rowsInserted = ps.executeUpdate();
 			if (rowsInserted > 0) {
 				System.out.println("Order inserted successfully.");
