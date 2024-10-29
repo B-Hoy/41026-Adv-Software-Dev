@@ -1,6 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <title>THIS IS UPDATED</title>
     <style>
         body {
             font-family: Arial, sans-serif;
