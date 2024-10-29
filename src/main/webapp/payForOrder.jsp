@@ -15,8 +15,9 @@
     <h1>Payment Details</h1>
 
     <%
+        // Fetch the current user and their cart from the session and database
         Database db = (Database) application.getAttribute("database");
-        User user = (User) session.getAttribute("user");
+        User user = db.get_user("testing@test.com", "testpasswd");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
@@ -25,9 +26,10 @@
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
             } else {
-                String deliveryMethod = request.getParameter("deliveryOption") != null ? request.getParameter("deliveryOption") : "pickup";
-                double deliveryFee = "delivery".equals(deliveryMethod) ? 5.99 : 0.00;
-                double totalPrice = cart.calculateTotalPrice(deliveryFee); 
+                // Calculate subtotal and delivery fee based on selection from checkout.jsp
+                String deliveryMethod = request.getParameter("deliveryOption");
+                double deliveryFee = deliveryMethod.equals("delivery") ? 5.99 : 0.00;
+                double totalPrice = cart.get_price() + deliveryFee;
     %>
 
     <!-- Display Order Summary -->
@@ -57,8 +59,8 @@
         <input type="text" id="cardNumber" name="cardNumber" pattern="[0-9]{16}" required><br>
 
         <label for="expiryDate">Expiry Date:</label>
-        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required><br>
-
+        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+        
         <label for="cvc">CVC:</label>
         <input type="text" id="cvc" name="cvc" pattern="[0-9]{3}" required><br>
 
@@ -70,10 +72,13 @@
             String enteredExpiryDate = request.getParameter("expiryDate");
             String enteredCvc = request.getParameter("cvc");
 
+<<<<<<< HEAD
             // Check if any of the parameters are null
             if (enteredCardName == null || enteredCardNumber == null || enteredExpiryDate == null || enteredCvc == null) {
                 out.println("<p style='color: red;'>Please fill in all payment details.</p>");
             } else {
+=======
+>>>>>>> a8ca04ead4bb5f20b6900a775cd918c77d648966
                 // Validate user data
                 if (!enteredCardName.equalsIgnoreCase(user.get_first_name() + " " + user.get_last_name()) ||
                     !enteredCardNumber.equals(user.get_card_num()) ||
@@ -88,6 +93,7 @@
                     int postcode = user.get_address_postcode();
 
                     // If delivery is chosen and the address was updated, get the new values
+<<<<<<< HEAD
                     if ("delivery".equals(deliveryMethod)) {
                         streetNum = request.getParameter("streetNumber");
                         street = request.getParameter("streetAddress");
@@ -117,11 +123,24 @@
                     }
 
                     // Add new order to the database, passing the totalPrice with the delivery fee included
+=======
+                    if (deliveryMethod.equals("delivery")) {
+                        streetNum = request.getParameter("streetNumber");
+                        street = request.getParameter("streetAddress");
+                        city = request.getParameter("city");
+                        postcode = Integer.parseInt(request.getParameter("postcode"));
+                    }
+
+                    // Add new order to the database
+>>>>>>> a8ca04ead4bb5f20b6900a775cd918c77d648966
                     db.create_order(user.get_id(), cart, totalPrice, deliveryMethod, streetNum, street, city, postcode);
 
                     // Redirect to submitOrder.jsp if successful
                     response.sendRedirect("submitOrder.jsp");
+<<<<<<< HEAD
                     return; // Ensure no further code is processed after redirect
+=======
+>>>>>>> a8ca04ead4bb5f20b6900a775cd918c77d648966
                 }
             }
         }
@@ -141,5 +160,11 @@
             } // End of cart check
         } // End of user check
     %>
+
 </body>
 </html>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a8ca04ead4bb5f20b6900a775cd918c77d648966

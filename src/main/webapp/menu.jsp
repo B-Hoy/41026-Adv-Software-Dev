@@ -79,7 +79,8 @@
     </head>
     <body>
         <div class="menu">
-        <h1>Menu</h1>
+        <h1><b>Menu</b></h1>
+		<a href="cart.jsp"><h1>Cart</h1></a>
 
         <div class="searchBar">
             <input class="searchInput" type="text" id="searchInput" onkeyup="searchMenu()" placeholder="Search for products...">
@@ -116,7 +117,7 @@
         %>
         </div>   
 
-    <a href="checkout.jsp" class="button">Go to Checkout</a>
+    <a href="cart.jsp" class="button">Go to Cart</a>
 
     <!-- Modal: A popup that will appear when clicking on an item which displays details about that item -->
     <!-- A single modal is used for all items, the details are changed via the openModal() function in the script below -->
@@ -128,8 +129,8 @@
                 <h2 id="modalName">Item Name</h2>
                 <p id="modalPrice">Item Price</p>
                 <p id="modalDescription">Item Description</p>
-
-                <button id="modalButton" onclick="addToCart('<%=user.get_id()%>')">Add to Cart</button>
+				<input type="number" id="item_amount" min="1" placeholder="1"></input>
+                <button id="modalButton" onclick="addToCart('<%=user.get_id()%>', document.getElementById('item_amount').value)">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -171,9 +172,9 @@
             }
         }
 
-        function addToCart(user){
+        function addToCart(user, quan){
             var userID = user;
-            var quantity = 1;
+            var quantity = quan;
             var itemID = document.getElementById("itemModal").dataset.itemid;
 
             if (!itemID || !userID) {

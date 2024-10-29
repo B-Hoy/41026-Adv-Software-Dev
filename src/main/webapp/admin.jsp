@@ -15,7 +15,14 @@
 			}
 			break;
 		case "update_order":
-			db.page_update_order(Integer.valueOf(request.getParameter("order_id")), request.getParameter("dev_method"), Integer.valueOf(request.getParameter("dev_driver")), request.getParameter("order_status"));
+			String d = request.getParameter("dev_driver");
+			int did;
+			if (d == null){
+				did = 0;
+			}else{
+				did = Integer.valueOf(request.getParameter("dev_driver"));
+			}
+			db.page_update_order(Integer.valueOf(request.getParameter("order_id")), request.getParameter("dev_method"), did, request.getParameter("order_status"));
 			break;
 		// all these functions are gonna use the cart id '1' instead of the current user id for testing's sake
 		case "add_to_cart":
@@ -226,7 +233,7 @@
 			</thead>
 			<%  String[] delivery_methods = {"Pickup", "Walk", "Cycle", "Drive"};
 				String[] statuses = {"Preparing", "Cooking", "Packing", "Delivering", "Finished"};
-				Employee[] drivers = db.get_all_employees();
+				Employee[] drivers = db.get_all_drivers();
 				for (int i = 0; i < orders.length; i++){
 					Employee cur_driver = db.get_employee(orders[i].get_driver_id());
 					MenuItemEntry[] items = orders[i].get_menu_items();
@@ -269,15 +276,17 @@
 						<td>
 							<% if (orders[i].get_status_level().equals("Finished")){ %>
 							<%=cur_driver != null ? cur_driver.toString() : ""%>
-							<%}else{%>
+							<%}else if (orders[i].get_status_level().equals("Packing")){%>
 							<select name="dev_driver" id="dev_driver">
 								<option value="<%=cur_driver != null ? cur_driver.get_id() : 0%>"><%=cur_driver != null ? cur_driver.toString() : ""%></option>
 								<% for (Employee e : drivers){
 									if (e != cur_driver){ %>
-									<option value="<%=e.get_id()%>"><%=e.toString()%></option>
+										<option value="<%=e.get_id()%>"><%=e.toString()%></option>
 								<%	}
 								}%>
 							</select>
+							<%}else{%>
+								Can't Assign Driver
 							<%}%>
 						</td>
 						<td><%=orders[i].get_order_date()%></td>

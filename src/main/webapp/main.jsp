@@ -19,5 +19,6 @@
                 <a href="menu.jsp" class="button">View menu</a>
             </div>
         </form>
+		<a href="cart.jsp" class="button">View cart</a>
     </body>
 </html>
