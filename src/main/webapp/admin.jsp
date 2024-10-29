@@ -221,7 +221,7 @@
 			</thead>
 			<%  String[] delivery_methods = {"Pickup", "Walk", "Cycle", "Drive"};
 				String[] statuses = {"Preparing", "Cooking", "Packing", "Delivering", "Finished"};
-				Employee[] drivers = db.get_all_employees();
+				Employee[] drivers = db.get_all_drivers();
 				for (int i = 0; i < orders.length; i++){
 					Employee cur_driver = db.get_employee(orders[i].get_driver_id());
 					MenuItemEntry[] items = orders[i].get_menu_items();

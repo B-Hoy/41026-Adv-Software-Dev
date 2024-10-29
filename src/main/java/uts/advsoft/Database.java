@@ -276,6 +276,20 @@ public class Database{
 		}
 		return emps.toArray(new Employee[]{});	
 	}
+	public Employee[] get_all_drivers(){
+		ArrayList<Employee> emps = new ArrayList<Employee>();
+		try{
+			Statement s = db_con.createStatement();
+			ResultSet rs = s.executeQuery("SELECT * FROM Employees WHERE role = 'Driver'");
+			while (rs.next()){
+				emps.add(new Employee(rs.getInt("id"), rs.getString("role"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("password"), rs.getString("hire_date").substring(0, 10)));
+			}
+			s.close();
+		}catch (Exception e){
+			System.out.println("ERROR: " + e.getMessage());
+		}
+		return emps.toArray(new Employee[]{});	
+	}
 	public Employee get_employee(int id){
 		try{
 			PreparedStatement ps = db_con.prepareStatement("SELECT * FROM Employees WHERE id = (?)");
