@@ -166,10 +166,11 @@ public class Database{
 			ps.setInt(9, user.get_card_cvc());
 			ps.setString(10, user.get_address_street_num());
 			ps.setString(11, user.get_address_street());
-			ps.setString(11, user.get_address_city());
-			ps.setInt(12, user.get_address_postcode());
+			ps.setString(12, user.get_address_city());
+			ps.setInt(13, user.get_address_postcode());
+			ps.setInt(14, user.get_id());
 			ps.executeUpdate();
-
+			ps.close();
 		}catch (Exception e){
 			System.out.println("ERROR: " + e.getMessage());
 		}

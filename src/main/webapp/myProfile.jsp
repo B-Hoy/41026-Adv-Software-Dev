@@ -13,6 +13,7 @@
         response.sendRedirect("login.jsp");
         return;
     }
+	currentUser = db.get_user(currentUser.get_id());
 %>
 
 
@@ -59,6 +60,7 @@
             <p><strong>Card Number:</strong> <input type="text" name="card_num" value="<%= currentUser.get_card_num() %>"></p>
             <p><strong>Card Expiry Date:</strong> <input type="text" name="card_expiry_date" value="<%= currentUser.get_card_expiry_date() %>"></p>
             <p><strong>CVC:</strong> <input type="text" name="card_cvc" value="<%= currentUser.get_card_cvc() %>"></p>
+            <p><strong>Street Number:</strong> <input type="text" name="address_street_num" value="<%= currentUser.get_address_street_num() %>"></p>
             <p><strong>Street:</strong> <input type="text" name="address_street" value="<%= currentUser.get_address_street() %>"></p>
             <p><strong>City:</strong> <input type="text" name="address_city" value="<%= currentUser.get_address_city() %>"></p>
             <p><strong>Postcode:</strong> <input type="text" name="address_postcode" value="<%= currentUser.get_address_postcode() %>"></p>
