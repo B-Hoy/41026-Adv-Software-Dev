@@ -54,11 +54,11 @@
 
     <%
         Database db = (Database) application.getAttribute("database");
-        User user = db.get_user("testing@test.com", "testpasswd");
+		User user = (User)session.getAttribute("user");
         if (user == null) {
             out.println("<p>No user is logged in.</p>");
         } else {
-            Cart cart = db.get_cart(1, "id");
+            Cart cart = db.get_cart(user.get_id(), "owner_id");
 
             if (cart == null) {
                 out.println("<p>Your cart is empty.</p>");
